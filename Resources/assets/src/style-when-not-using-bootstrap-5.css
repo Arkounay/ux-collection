@@ -15,6 +15,10 @@
     display: flex;
 }
 
+.arkounay-ux-collection .d-none {
+    display: none;
+}
+
 .arkounay-ux-collection .collection-up {
     padding-right: 10px;
 }
