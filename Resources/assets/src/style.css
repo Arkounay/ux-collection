@@ -1,0 +1,15 @@
+.arkounay-ux-collection .sortable-ghost {
+    border: 2px solid #86b7fe !important;
+}
+
+.arkounay-ux-collection .collection-up, .arkounay-ux-collection .collection-down {
+    color: #333333;
+}
+
+.arkounay-ux-collection .collection-remove:hover {
+    color: red;
+}
+
+.arkounay-ux-collection .collection-up:hover, .arkounay-ux-collection .collection-down:hover {
+    color: black;
+}
