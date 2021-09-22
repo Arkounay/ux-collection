@@ -13,6 +13,8 @@ class UxCollectionType extends AbstractType
 
     private const DEFAULT_OPTIONS = [
         'add_label' => 'Add',
+        'allow_add' => true,
+        'allow_delete' => true,
         'allow_drag_and_drop' => true,
         'display_sort_buttons' => true,
         'min' => 1,

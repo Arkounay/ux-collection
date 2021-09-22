@@ -21,13 +21,15 @@
                     </button>
                 {% endif %}
                 <div class="w-100"></div>
-                <button data-action="arkounay--ux-collection--collection#remove" class="collection-remove btn btn-collection btn-collection-remove align-self-end">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                </button>
+                {% if form.parent.vars.allow_delete %}
+                    <button data-action="arkounay--ux-collection--collection#remove" class="collection-remove btn btn-collection btn-collection-remove align-self-end">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                {% endif %}
             </div>
             <div class="mx-3 mb-3">
                 {{ form_widget(form) }}
@@ -61,16 +63,18 @@
             {{- block('form_rows') -}}
             {{- form_rest(form) -}}
 
-            <div class="text-end">
-                <button class="btn btn-outline-secondary collection-add" data-arkounay--ux-collection--collection-target="add" data-action="arkounay--ux-collection--collection#add">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    {{ (add_label|default('Add'))|trans }}
-                </button>
-            </div>
+            {% if allow_add %}
+                <div class="text-end">
+                    <button class="btn btn-outline-secondary collection-add" data-arkounay--ux-collection--collection-target="add" data-action="arkounay--ux-collection--collection#add">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        {{ (add_label|default('Add'))|trans }}
+                    </button>
+                </div>
+            {% endif %}
         </div>
     {% endapply %}
 {% endblock %}
