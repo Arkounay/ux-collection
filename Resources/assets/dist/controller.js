@@ -150,10 +150,7 @@ var _default = /*#__PURE__*/function (_Controller) {
 
       var element = _classPrivateMethodGet(this, _getCollectionItemFromTarget, _getCollectionItemFromTarget2).call(this, e.target);
 
-      element.remove(); // for (let i = 0; i < this.length; i++) {
-      //     const namePrefixRegex = this.namePrefix.replaceAll('[', '\\[').replace(']', '\\]');
-      //     this.collectionElementTargets[i].innerHTML = this.collectionElementTargets[i].innerHTML.replace(new RegExp(`${namePrefixRegex}\\[\\d+\\]`, 'g'), `${this.namePrefix}[${i}]`);
-      // }
+      element.remove();
 
       _classPrivateMethodGet(this, _refreshNameAndButtons, _refreshNameAndButtons2).call(this);
     }
