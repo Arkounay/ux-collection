@@ -78,11 +78,6 @@ export default class extends Controller {
         const element = this.#getCollectionItemFromTarget(e.target);
         element.remove();
 
-        // for (let i = 0; i < this.length; i++) {
-        //     const namePrefixRegex = this.namePrefix.replaceAll('[', '\\[').replace(']', '\\]');
-        //     this.collectionElementTargets[i].innerHTML = this.collectionElementTargets[i].innerHTML.replace(new RegExp(`${namePrefixRegex}\\[\\d+\\]`, 'g'), `${this.namePrefix}[${i}]`);
-        // }
-
         this.#refreshNameAndButtons();
     }
 
