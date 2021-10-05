@@ -56,3 +56,69 @@ e.g:
         ;
     }
 ```
+
+## Options
+
+- **allow_add**: will display the Add button (default true)
+- **allow_delete**: will display the Delete button (defualt true)
+- **allow_drag_and_drop**: will allow the user to change item positions using drag and drop (default true)
+- **display_sort_buttons**: will display arrow up and down buttons to change item positions (default true)
+- **add_label**: The add button label (default "Add")
+- **min**: The number of minimum items within the collection. When a collection has `allow_add` set to `true` and has less items than `min` upon creation, empty items will be added (default 1) and the remove button will remain hidden until more items are created. 
+- **max**: The number of maximum items within the collection. When the collection reaches the maximum number of items, the add button will be hidden. (default null - no limit)
+
+### Extend the default behavior
+
+UxCollection allows you to extend its default behavior using a custom Stimulus controller, ie `custom_collection_controller.js`: 
+```js
+import { Controller } from 'stimulus';
+
+export default class extends Controller {
+    
+    connect() {
+        this.element.addEventListener('ux-collection:connect', this._onConnect);
+        this.element.addEventListener('ux-collection:change', this._onChange);
+        this.element.addEventListener('ux-collection:add', this._onAdd);
+        this.element.addEventListener('ux-collection:remove', this._onRemove);
+    }
+
+    disconnect() {
+        this.element.removeEventListener('ux-collection:connect', this._onConnect);
+        this.element.removeEventListener('ux-collection:change', this._onChange);
+        this.element.removeEventListener('ux-collection:add', this._onAdd);
+        this.element.removeEventListener('ux-collection:remove', this._onRemove);
+    }
+
+    _onConnect() {
+        console.log('The custom collection was just created');
+    }
+
+    _onChange() {
+        console.log('The custom collection changed');
+    }
+
+    _onAdd(event) {
+        console.log('An element was added', event.detail);
+    }
+
+    _onRemove(event) {
+        console.log('An element was removed', event.detail);
+    }
+    
+}
+```
+
+Then in your form, add your controller as an HTML attribute:
+
+```php
+public function buildForm(FormBuilderInterface $builder, array $options)
+{
+    $builder
+        // ...
+        ->add('collection', UxCollectionType::class, [
+            'attr' => ['data-controller' => 'custom-collection']
+        ])
+        // ...
+    ;
+}
+```

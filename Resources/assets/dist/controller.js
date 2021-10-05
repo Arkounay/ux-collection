@@ -49,7 +49,7 @@ function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(
 
 var _getCollectionItemFromTarget = /*#__PURE__*/new WeakSet();
 
-var _refreshNameAndButtons = /*#__PURE__*/new WeakSet();
+var _change = /*#__PURE__*/new WeakSet();
 
 var _default = /*#__PURE__*/function (_Controller) {
   _inherits(_default, _Controller);
@@ -67,7 +67,7 @@ var _default = /*#__PURE__*/function (_Controller) {
 
     _this = _super.call.apply(_super, [this].concat(args));
 
-    _classPrivateMethodInitSpec(_assertThisInitialized(_this), _refreshNameAndButtons);
+    _classPrivateMethodInitSpec(_assertThisInitialized(_this), _change);
 
     _classPrivateMethodInitSpec(_assertThisInitialized(_this), _getCollectionItemFromTarget);
 
@@ -88,7 +88,7 @@ var _default = /*#__PURE__*/function (_Controller) {
       this.prototypeName = this.element.dataset.prototypeName;
       this.namePrefix = this.element.dataset.namePrefix;
 
-      if (this.hasMinValue && this.minValue) {
+      if (this.hasMinValue && this.minValue && this.prototype !== undefined) {
         for (var i = this.length; i < this.minValue; i++) {
           this.add();
         }
@@ -98,12 +98,14 @@ var _default = /*#__PURE__*/function (_Controller) {
         _sortablejs["default"].create(this.element, {
           draggable: '[data-arkounay--ux-collection--collection-target="collectionElement"]',
           onSort: function onSort() {
-            _classPrivateMethodGet(_this2, _refreshNameAndButtons, _refreshNameAndButtons2).call(_this2);
+            _classPrivateMethodGet(_this2, _change, _change2).call(_this2);
           }
         });
       }
 
-      _classPrivateMethodGet(this, _refreshNameAndButtons, _refreshNameAndButtons2).call(this);
+      _classPrivateMethodGet(this, _change, _change2).call(this);
+
+      this._dispatchEvent('ux-collection:connect');
     }
   }, {
     key: "moveUp",
@@ -122,7 +124,9 @@ var _default = /*#__PURE__*/function (_Controller) {
 
       this.collectionElementTargets[newIndex].before(element);
 
-      _classPrivateMethodGet(this, _refreshNameAndButtons, _refreshNameAndButtons2).call(this);
+      _classPrivateMethodGet(this, _change, _change2).call(this);
+
+      this._dispatchEvent('ux-collection:moveUp', newIndex);
     }
   }, {
     key: "moveDown",
@@ -141,7 +145,9 @@ var _default = /*#__PURE__*/function (_Controller) {
 
       this.collectionElementTargets[newIndex].after(element);
 
-      _classPrivateMethodGet(this, _refreshNameAndButtons, _refreshNameAndButtons2).call(this);
+      _classPrivateMethodGet(this, _change, _change2).call(this);
+
+      this._dispatchEvent('ux-collection:moveDown', newIndex);
     }
   }, {
     key: "remove",
@@ -152,7 +158,9 @@ var _default = /*#__PURE__*/function (_Controller) {
 
       element.remove();
 
-      _classPrivateMethodGet(this, _refreshNameAndButtons, _refreshNameAndButtons2).call(this);
+      _classPrivateMethodGet(this, _change, _change2).call(this);
+
+      this._dispatchEvent('ux-collection:remove', element);
     }
   }, {
     key: "add",
@@ -171,14 +179,28 @@ var _default = /*#__PURE__*/function (_Controller) {
         this.collectionElementTargets[position].insertAdjacentHTML('afterend', prototype);
       }
 
-      _classPrivateMethodGet(this, _refreshNameAndButtons, _refreshNameAndButtons2).call(this);
+      var added = this.collectionElementTargets[position + 1];
 
-      return this.collectionElementTargets[position + 1];
+      _classPrivateMethodGet(this, _change, _change2).call(this);
+
+      this._dispatchEvent('ux-collection:add', added);
+
+      return added;
     }
   }, {
     key: "length",
     get: function get() {
       return this.collectionElementTargets.length;
+    }
+  }, {
+    key: "_dispatchEvent",
+    value: function _dispatchEvent(name) {
+      var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var canBubble = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+      var cancelable = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+      var userEvent = document.createEvent('CustomEvent');
+      userEvent.initCustomEvent(name, canBubble, cancelable, payload);
+      this.element.dispatchEvent(userEvent);
     }
   }]);
 
@@ -191,7 +213,7 @@ function _getCollectionItemFromTarget2(target) {
   return target.closest('[data-arkounay--ux-collection--collection-target="collectionElement"]');
 }
 
-function _refreshNameAndButtons2() {
+function _change2() {
   // refresh form names
   for (var i = 0; i < this.length; i++) {
     var _iterator = _createForOfIteratorHelper(this.collectionElementTargets[i].querySelectorAll(["[name^=\"".concat(this.namePrefix, "[\"]")])),
@@ -236,10 +258,31 @@ function _refreshNameAndButtons2() {
     } else {
       this.addTarget.classList.remove('d-none');
     }
+  } // hide remove button if there is a min value
+
+
+  if (this.hasMinValue && this.deleteTargets.length > 0) {
+    var hideDelete = this.length <= this.minValue;
+
+    if (hideDelete) {
+      this.collectionElementTargets[0].classList.add('pt-3');
+    } else {
+      this.collectionElementTargets[0].classList.remove('pt-3');
+    }
+
+    for (var _i3 = 0; _i3 < this.deleteTargets.length; _i3++) {
+      if (hideDelete) {
+        this.deleteTargets[_i3].classList.add('d-none');
+      } else {
+        this.deleteTargets[_i3].classList.remove('d-none');
+      }
+    }
   }
+
+  this._dispatchEvent('ux-collection:change');
 }
 
-_defineProperty(_default, "targets", ['collectionElement', 'up', 'down', 'add']);
+_defineProperty(_default, "targets", ['collectionElement', 'up', 'down', 'add', 'delete']);
 
 _defineProperty(_default, "values", {
   min: Number,

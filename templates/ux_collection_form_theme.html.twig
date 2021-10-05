@@ -22,7 +22,7 @@
                 {% endif %}
                 <div class="w-100"></div>
                 {% if form.parent.vars.allow_delete %}
-                    <button data-action="arkounay--ux-collection--collection#remove" class="collection-remove btn btn-collection btn-collection-remove align-self-end">
+                    <button data-arkounay--ux-collection--collection-target="delete" data-action="arkounay--ux-collection--collection#remove" class="collection-remove btn btn-collection btn-collection-remove align-self-end">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                             <line x1="18" y1="6" x2="6" y2="18" />
@@ -50,7 +50,7 @@
         {% set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) %}
         {% set attr = attr|merge({'data-name-prefix': full_name}) %}
         {% set attr = attr|merge({'class': attr.class|default('collection arkounay-ux-collection')}) %}
-        {% set attr = attr|merge({'data-controller': attr['data-controller']|default('arkounay--ux-collection--collection')}) %}
+        {% set attr = attr|merge({'data-controller': (attr['data-controller']|default('') ~ ' arkounay--ux-collection--collection')|trim}) %}
         {% set attr = attr|merge({'data-arkounay--ux-collection--collection-allow-drag-and-drop-value': allow_drag_and_drop}) %}
         {% set attr = attr|merge({'data-arkounay--ux-collection--collection-display-sort-buttons-value': display_sort_buttons}) %}
         {% set attr = attr|merge({'data-arkounay--ux-collection--collection-min-value': min}) %}
@@ -64,7 +64,7 @@
             {{- form_rest(form) -}}
 
             {% if allow_add %}
-                <div class="text-end">
+                <div class="text-end mb-3">
                     <button class="btn btn-outline-secondary collection-add" data-arkounay--ux-collection--collection-target="add" data-action="arkounay--ux-collection--collection#add">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>

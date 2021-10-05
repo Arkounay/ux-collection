@@ -5,7 +5,7 @@ import Sortable from 'sortablejs';
 
 export default class extends Controller {
 
-    static targets = ['collectionElement', 'up', 'down', 'add']
+    static targets = ['collectionElement', 'up', 'down', 'add', 'delete']
 
     static values = {
         min: Number,
@@ -23,7 +23,7 @@ export default class extends Controller {
         this.prototypeName = this.element.dataset.prototypeName;
         this.namePrefix = this.element.dataset.namePrefix;
 
-        if (this.hasMinValue && this.minValue) {
+        if (this.hasMinValue && this.minValue && this.prototype !== undefined) {
             for (let i = this.length; i < this.minValue; i++) {
                 this.add();
             }
@@ -33,12 +33,13 @@ export default class extends Controller {
             Sortable.create(this.element, {
                 draggable: '[data-arkounay--ux-collection--collection-target="collectionElement"]',
                 onSort: () => {
-                    this.#refreshNameAndButtons();
+                    this.#change();
                 }
             });
         }
 
-        this.#refreshNameAndButtons();
+        this.#change();
+        this._dispatchEvent('ux-collection:connect');
     }
 
     moveUp(e) {
@@ -54,7 +55,8 @@ export default class extends Controller {
 
         // move the dom element up
         this.collectionElementTargets[newIndex].before(element);
-        this.#refreshNameAndButtons();
+        this.#change();
+        this._dispatchEvent('ux-collection:moveUp', newIndex);
     }
 
     moveDown(e) {
@@ -70,7 +72,8 @@ export default class extends Controller {
 
         // move the dom element down
         this.collectionElementTargets[newIndex].after(element);
-        this.#refreshNameAndButtons();
+        this.#change();
+        this._dispatchEvent('ux-collection:moveDown', newIndex);
     }
 
     remove(e) {
@@ -78,7 +81,8 @@ export default class extends Controller {
         const element = this.#getCollectionItemFromTarget(e.target);
         element.remove();
 
-        this.#refreshNameAndButtons();
+        this.#change();
+        this._dispatchEvent('ux-collection:remove', element);
     }
 
     add(e, position) {
@@ -93,17 +97,19 @@ export default class extends Controller {
             }
             this.collectionElementTargets[position].insertAdjacentHTML('afterend', prototype);
         }
+        const added = this.collectionElementTargets[position + 1];
 
-        this.#refreshNameAndButtons();
+        this.#change();
+        this._dispatchEvent('ux-collection:add', added);
 
-        return this.collectionElementTargets[position + 1];
+        return added;
     }
 
     #getCollectionItemFromTarget(target) {
         return target.closest('[data-arkounay--ux-collection--collection-target="collectionElement"]');
     }
 
-    #refreshNameAndButtons() {
+    #change() {
         // refresh form names
         for (let i = 0; i < this.length; i++) {
             for (const input of this.collectionElementTargets[i].querySelectorAll([`[name^="${this.namePrefix}["]`])) {
@@ -136,10 +142,36 @@ export default class extends Controller {
                 this.addTarget.classList.remove('d-none');
             }
         }
+
+        // hide remove button if there is a min value
+        if (this.hasMinValue && this.deleteTargets.length > 0) {
+            const hideDelete = this.length <= this.minValue;
+            if (hideDelete) {
+                this.collectionElementTargets[0].classList.add('pt-3')
+            } else {
+                this.collectionElementTargets[0].classList.remove('pt-3')
+            }
+            for (let i = 0; i < this.deleteTargets.length; i++) {
+                if (hideDelete) {
+                    this.deleteTargets[i].classList.add('d-none');
+                } else {
+                    this.deleteTargets[i].classList.remove('d-none');
+                }
+            }
+        }
+
+        this._dispatchEvent('ux-collection:change');
     }
 
     get length() {
         return this.collectionElementTargets.length;
+    }
+
+    _dispatchEvent(name, payload = null, canBubble = false, cancelable = false) {
+        const userEvent = document.createEvent('CustomEvent');
+        userEvent.initCustomEvent(name, canBubble, cancelable, payload);
+
+        this.element.dispatchEvent(userEvent);
     }
 
 }
