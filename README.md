@@ -2,6 +2,8 @@
 
 Symfony Collections that works out of the box with Symfony UX
 
+![demo-gif](https://github.com/arkounay/ux-collection/raw/master/doc/demo.gif)
+
 ## Installation
 
 ```sh
