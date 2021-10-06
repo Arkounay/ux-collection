@@ -62,11 +62,11 @@ e.g:
 ## Options
 
 - **allow_add**: will display the Add button (default true)
-- **allow_delete**: will display the Delete button (defualt true)
+- **allow_delete**: will display the Delete button (default true)
 - **allow_drag_and_drop**: will allow the user to change item positions using drag and drop (default true)
 - **display_sort_buttons**: will display arrow up and down buttons to change item positions (default true)
 - **add_label**: The add button label (default "Add")
-- **min**: The number of minimum items within the collection. When a collection has `allow_add` set to `true` and has less items than `min` upon creation, empty items will be added (default 1) and the remove button will remain hidden until more items are created. 
+- **min**: The number of minimum items within the collection. When a collection has `allow_add` set to `true` and has less items than `min` upon creation, empty items will be added and the remove button will remain hidden until more items are created. (default 1)
 - **max**: The number of maximum items within the collection. When the collection reaches the maximum number of items, the add button will be hidden. (default null - no limit)
 
 ### Extend the default behavior
