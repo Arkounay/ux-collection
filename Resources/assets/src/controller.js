@@ -22,6 +22,7 @@ export default class extends Controller {
         this.prototype = this.element.dataset.prototype;
         this.prototypeName = this.element.dataset.prototypeName;
         this.namePrefix = this.element.dataset.namePrefix;
+        this.autoIncrement = this.length;
 
         if (this.hasMinValue && this.minValue && this.prototype !== undefined) {
             for (let i = this.length; i < this.minValue; i++) {
@@ -87,7 +88,7 @@ export default class extends Controller {
 
     add(e, position) {
         e?.preventDefault();
-        let prototype = this.prototype.replaceAll(this.prototypeName, this.length);
+        let prototype = this.prototype.replaceAll(this.prototypeName, this.autoIncrement);
         if (this.length === 0) {
             this.element.insertAdjacentHTML('afterbegin', prototype);
             position = -1;
@@ -101,6 +102,7 @@ export default class extends Controller {
 
         this.#change();
         this._dispatchEvent('ux-collection:add', added);
+        this.autoIncrement++;
 
         return added;
     }
@@ -170,7 +172,6 @@ export default class extends Controller {
     _dispatchEvent(name, payload = null, canBubble = false, cancelable = false) {
         const userEvent = document.createEvent('CustomEvent');
         userEvent.initCustomEvent(name, canBubble, cancelable, payload);
-
         this.element.dispatchEvent(userEvent);
     }
 

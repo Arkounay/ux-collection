@@ -87,6 +87,7 @@ var _default = /*#__PURE__*/function (_Controller) {
       this.prototype = this.element.dataset.prototype;
       this.prototypeName = this.element.dataset.prototypeName;
       this.namePrefix = this.element.dataset.namePrefix;
+      this.autoIncrement = this.length;
 
       if (this.hasMinValue && this.minValue && this.prototype !== undefined) {
         for (var i = this.length; i < this.minValue; i++) {
@@ -166,7 +167,7 @@ var _default = /*#__PURE__*/function (_Controller) {
     key: "add",
     value: function add(e, position) {
       e === null || e === void 0 ? void 0 : e.preventDefault();
-      var prototype = this.prototype.replaceAll(this.prototypeName, this.length);
+      var prototype = this.prototype.replaceAll(this.prototypeName, this.autoIncrement);
 
       if (this.length === 0) {
         this.element.insertAdjacentHTML('afterbegin', prototype);
@@ -185,6 +186,7 @@ var _default = /*#__PURE__*/function (_Controller) {
 
       this._dispatchEvent('ux-collection:add', added);
 
+      this.autoIncrement++;
       return added;
     }
   }, {
