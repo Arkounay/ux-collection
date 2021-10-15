@@ -1,3 +1,7 @@
+{% block ux_collection_row %}
+    {{ block('form_row') }}
+{% endblock %}
+
 {% block ux_collection_entry_row %}
     {% apply spaceless %}
         <div class="card pt-0 mb-3" data-arkounay--ux-collection--collection-target="collectionElement">
