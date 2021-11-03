@@ -4,7 +4,7 @@
 
 {% block ux_collection_entry_row %}
     {% apply spaceless %}
-        <div class="card pt-0 mb-3" data-arkounay--ux-collection--collection-target="collectionElement">
+        <div class="card pt-0 mb-3" data-arkounay--ux-collection--collection-target="collectionElement" {% for k, v in attr|default %}{{ k }}="{{ v }}"{% endfor %}>
             <div class="btn-collection-container d-flex">
                 {% if form.parent.vars.display_sort_buttons|default(false) %}
                     <button data-action="arkounay--ux-collection--collection#moveUp" data-arkounay--ux-collection--collection-target="up" class="collection-up btn btn-collection">
