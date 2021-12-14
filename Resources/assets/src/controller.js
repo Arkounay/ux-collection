@@ -1,6 +1,6 @@
 'use strict';
 
-import { Controller } from 'stimulus';
+import { Controller } from '@hotwired/stimulus';
 import Sortable from 'sortablejs';
 
 export default class extends Controller {
@@ -18,7 +18,7 @@ export default class extends Controller {
     namePrefix;
 
     connect() {
-        this.element[this.identifier] = this
+        this.element[this.identifier] = this;
         this.prototype = this.element.dataset.prototype;
         this.prototypeName = this.element.dataset.prototypeName;
         this.namePrefix = this.element.dataset.namePrefix;

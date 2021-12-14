@@ -21,7 +21,7 @@ class UxCollectionType extends AbstractType
         'max' => null,
     ];
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         parent::buildView($view, $form, $options);
         foreach (self::DEFAULT_OPTIONS as $key => $value) {
@@ -29,13 +29,13 @@ class UxCollectionType extends AbstractType
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
         $resolver->setDefaults(self::DEFAULT_OPTIONS);
     }
 
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         parent::finishView($view, $form, $options);
         foreach ($view as $entryView) {
@@ -46,7 +46,7 @@ class UxCollectionType extends AbstractType
         }
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return CollectionType::class;
     }
