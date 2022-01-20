@@ -260,14 +260,14 @@ function _change2() {
   } // hide remove button if there is a min value
 
 
-  if (this.hasMinValue && this.deleteTargets.length > 0) {
+  if (this.hasMinValue && this.hasMinValue > 0 && this.deleteTargets.length > 0) {
     var hideDelete = this.length <= this.minValue;
 
     for (var _i3 = 0; _i3 < this.collectionElementTargets.length; _i3++) {
       if (hideDelete) {
-        this.collectionElementTargets[_i3].classList.add('pt-3', 'collection-hide-delete');
+        this.collectionElementTargets[_i3].classList.add('collection-hide-delete');
       } else {
-        this.collectionElementTargets[_i3].classList.remove('pt-3', 'collection-hide-delete');
+        this.collectionElementTargets[_i3].classList.remove('collection-hide-delete');
       }
     }
 

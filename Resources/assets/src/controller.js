@@ -146,13 +146,13 @@ export default class extends Controller {
         }
 
         // hide remove button if there is a min value
-        if (this.hasMinValue && this.deleteTargets.length > 0) {
+        if (this.hasMinValue && this.hasMinValue > 0 && this.deleteTargets.length > 0) {
             const hideDelete = this.length <= this.minValue;
             for (let i = 0; i < this.collectionElementTargets.length; i++) {
                 if (hideDelete) {
-                    this.collectionElementTargets[i].classList.add('pt-3', 'collection-hide-delete')
+                    this.collectionElementTargets[i].classList.add('collection-hide-delete')
                 } else {
-                    this.collectionElementTargets[i].classList.remove('pt-3', 'collection-hide-delete')
+                    this.collectionElementTargets[i].classList.remove('collection-hide-delete')
                 }
             }
             for (let i = 0; i < this.deleteTargets.length; i++) {
