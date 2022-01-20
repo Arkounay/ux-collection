@@ -148,10 +148,12 @@ export default class extends Controller {
         // hide remove button if there is a min value
         if (this.hasMinValue && this.deleteTargets.length > 0) {
             const hideDelete = this.length <= this.minValue;
-            if (hideDelete) {
-                this.collectionElementTargets[0].classList.add('pt-3')
-            } else {
-                this.collectionElementTargets[0].classList.remove('pt-3')
+            for (let i = 0; i < this.collectionElementTargets.length; i++) {
+                if (hideDelete) {
+                    this.collectionElementTargets[i].classList.add('pt-3', 'collection-hide-delete')
+                } else {
+                    this.collectionElementTargets[i].classList.remove('pt-3', 'collection-hide-delete')
+                }
             }
             for (let i = 0; i < this.deleteTargets.length; i++) {
                 if (hideDelete) {
@@ -169,10 +171,8 @@ export default class extends Controller {
         return this.collectionElementTargets.length;
     }
 
-    _dispatchEvent(name, payload = null, canBubble = false, cancelable = false) {
-        const userEvent = document.createEvent('CustomEvent');
-        userEvent.initCustomEvent(name, canBubble, cancelable, payload);
-        this.element.dispatchEvent(userEvent);
+    _dispatchEvent(name, payload) {
+        this.element.dispatchEvent(new CustomEvent(name, { detail: payload }));
     }
 
 }

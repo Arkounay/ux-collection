@@ -196,13 +196,10 @@ var _default = /*#__PURE__*/function (_Controller) {
     }
   }, {
     key: "_dispatchEvent",
-    value: function _dispatchEvent(name) {
-      var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-      var canBubble = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      var cancelable = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      var userEvent = document.createEvent('CustomEvent');
-      userEvent.initCustomEvent(name, canBubble, cancelable, payload);
-      this.element.dispatchEvent(userEvent);
+    value: function _dispatchEvent(name, payload) {
+      this.element.dispatchEvent(new CustomEvent(name, {
+        detail: payload
+      }));
     }
   }]);
 
@@ -254,9 +251,6 @@ function _change2() {
   } // hide add button if there is a max value
 
 
-  console.log(this.hasMaxValue && this.hasAddTarget);
-  console.log(this.maxValue);
-
   if (this.hasMaxValue && this.hasAddTarget) {
     if (this.length >= this.maxValue) {
       this.addTarget.classList.add('d-none');
@@ -269,17 +263,19 @@ function _change2() {
   if (this.hasMinValue && this.deleteTargets.length > 0) {
     var hideDelete = this.length <= this.minValue;
 
-    if (hideDelete) {
-      this.collectionElementTargets[0].classList.add('pt-3');
-    } else {
-      this.collectionElementTargets[0].classList.remove('pt-3');
+    for (var _i3 = 0; _i3 < this.collectionElementTargets.length; _i3++) {
+      if (hideDelete) {
+        this.collectionElementTargets[_i3].classList.add('pt-3', 'collection-hide-delete');
+      } else {
+        this.collectionElementTargets[_i3].classList.remove('pt-3', 'collection-hide-delete');
+      }
     }
 
-    for (var _i3 = 0; _i3 < this.deleteTargets.length; _i3++) {
+    for (var _i4 = 0; _i4 < this.deleteTargets.length; _i4++) {
       if (hideDelete) {
-        this.deleteTargets[_i3].classList.add('d-none');
+        this.deleteTargets[_i4].classList.add('d-none');
       } else {
-        this.deleteTargets[_i3].classList.remove('d-none');
+        this.deleteTargets[_i4].classList.remove('d-none');
       }
     }
   }
