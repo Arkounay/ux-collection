@@ -48,4 +48,9 @@
     border: 1px solid #8a8a8a;
     background-color: #ececec;
     cursor: pointer;
+    color: black;
+}
+
+.collection-hide-delete .collection-content {
+    padding-top: 0;
 }

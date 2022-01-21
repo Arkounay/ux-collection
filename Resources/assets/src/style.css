@@ -13,3 +13,7 @@
 .arkounay-ux-collection .collection-up:hover, .arkounay-ux-collection .collection-down:hover {
     color: black;
 }
+
+.collection-hide-delete .collection-content {
+    padding-top: 15px;
+}
