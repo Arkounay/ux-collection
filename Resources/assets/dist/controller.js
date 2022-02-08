@@ -221,7 +221,26 @@ function _change2() {
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         var input = _step.value;
-        input.name = input.name.replaceAll(new RegExp("".concat(this.namePrefix, "[\\d+]").replaceAll('[', '\\[').replaceAll(']', '\\]'), 'g'), "".concat(this.namePrefix, "[").concat(i, "]"));
+        var newName = input.name.replaceAll(new RegExp("".concat(this.namePrefix, "[\\d+]").replaceAll('[', '\\[').replaceAll(']', '\\]'), 'g'), "".concat(this.namePrefix, "[").concat(i, "]")).replaceAll('_ux_collection_tmp_swap', ''); // if a radio's name changes to an already existing name, it might uncheck the one which has the same name.
+        // to prevent this I append _ux_collection_tmp_swap to get a temporary name. It'll get changed back when reassigning names
+
+        var inputsWithSameName = this.element.querySelectorAll("[name=\"".concat(newName, "\"]"));
+
+        var _iterator2 = _createForOfIteratorHelper(inputsWithSameName),
+            _step2;
+
+        try {
+          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+            var inputWithSameName = _step2.value;
+            inputWithSameName.name += '_ux_collection_tmp_swap';
+          }
+        } catch (err) {
+          _iterator2.e(err);
+        } finally {
+          _iterator2.f();
+        }
+
+        input.name = newName;
       }
     } catch (err) {
       _iterator.e(err);

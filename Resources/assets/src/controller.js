@@ -115,7 +115,16 @@ export default class extends Controller {
         // refresh form names
         for (let i = 0; i < this.length; i++) {
             for (const input of this.collectionElementTargets[i].querySelectorAll([`[name^="${this.namePrefix}["]`])) {
-                input.name = input.name.replaceAll(new RegExp(`${this.namePrefix}[\\d+]`.replaceAll('[', '\\[').replaceAll(']', '\\]'), 'g'), `${this.namePrefix}[${i}]`);
+                const newName = input.name.replaceAll(new RegExp(`${this.namePrefix}[\\d+]`.replaceAll('[', '\\[').replaceAll(']', '\\]'), 'g'), `${this.namePrefix}[${i}]`).replaceAll('_ux_collection_tmp_swap', '');
+
+                // if a radio's name changes to an already existing name, it might uncheck the one which has the same name.
+                // to prevent this I append _ux_collection_tmp_swap to get a temporary name. It'll get changed back when reassigning names
+                const inputsWithSameName = this.element.querySelectorAll(`[name="${newName}"]`);
+                for (const inputWithSameName of inputsWithSameName) {
+                    inputWithSameName.name += '_ux_collection_tmp_swap';
+                }
+
+                input.name = newName;
             }
         }
 
