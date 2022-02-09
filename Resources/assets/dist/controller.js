@@ -232,7 +232,10 @@ function _change2() {
         try {
           for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
             var inputWithSameName = _step2.value;
-            inputWithSameName.name += '_ux_collection_tmp_swap';
+
+            if (_classPrivateMethodGet(this, _getCollectionItemFromTarget, _getCollectionItemFromTarget2).call(this, inputWithSameName) !== this.collectionElementTargets[i]) {
+              inputWithSameName.name += '_ux_collection_tmp_swap';
+            }
           }
         } catch (err) {
           _iterator2.e(err);

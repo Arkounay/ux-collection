@@ -121,7 +121,9 @@ export default class extends Controller {
                 // to prevent this I append _ux_collection_tmp_swap to get a temporary name. It'll get changed back when reassigning names
                 const inputsWithSameName = this.element.querySelectorAll(`[name="${newName}"]`);
                 for (const inputWithSameName of inputsWithSameName) {
-                    inputWithSameName.name += '_ux_collection_tmp_swap';
+                    if (this.#getCollectionItemFromTarget(inputWithSameName) !== this.collectionElementTargets[i]) {
+                        inputWithSameName.name += '_ux_collection_tmp_swap';
+                    }
                 }
 
                 input.name = newName;
