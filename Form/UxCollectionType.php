@@ -17,6 +17,10 @@ class UxCollectionType extends AbstractType
         'allow_delete' => true,
         'allow_drag_and_drop' => true,
         'display_sort_buttons' => true,
+        'entry_class' => 'card',
+        'entry_element_class' => 'collection-content mx-3 mb-3',
+        'icon_up' => false,
+        'icon_down' => false,
         'min' => 1,
         'max' => null,
     ];

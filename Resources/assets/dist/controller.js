@@ -98,6 +98,8 @@ var _default = /*#__PURE__*/function (_Controller) {
       if (this.allowDragAndDropValue) {
         _sortablejs["default"].create(this.element, {
           draggable: '[data-arkounay--ux-collection--collection-target="collectionElement"]',
+          filter: "input,textarea",
+          preventOnFilter: false,
           onSort: function onSort() {
             _classPrivateMethodGet(_this2, _change, _change2).call(_this2);
           }

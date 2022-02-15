@@ -4,41 +4,51 @@
 
 {% block ux_collection_entry_row %}
     {% apply spaceless %}
-        <div {% if not row_attr.class|default(false) %}class="card pt-0 mb-3"{% endif%} data-arkounay--ux-collection--collection-target="collectionElement" {% for k, v in row_attr|default %}{{ k }}="{{ v }}"{% endfor %}>
-            <div class="btn-collection-container d-flex">
-                {% if form.parent.vars.display_sort_buttons|default(false) %}
-                    <button data-action="arkounay--ux-collection--collection#moveUp" data-arkounay--ux-collection--collection-target="up" class="collection-up btn btn-collection">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="18" y1="11" x2="12" y2="5" />
-                            <line x1="6" y1="11" x2="12" y2="5" />
-                        </svg>
-                    </button>
-                    <button data-action="arkounay--ux-collection--collection#moveDown" data-arkounay--ux-collection--collection-target="down" class="collection-down btn btn-collection">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="18" y1="13" x2="12" y2="19" />
-                            <line x1="6" y1="13" x2="12" y2="19" />
-                        </svg>
-                    </button>
-                {% endif %}
-                <div class="w-100"></div>
-                {% if form.parent.vars.allow_delete %}
-                    <button data-arkounay--ux-collection--collection-target="delete" data-action="arkounay--ux-collection--collection#remove" class="collection-remove btn btn-collection btn-collection-remove align-self-end">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                            <line x1="18" y1="6" x2="6" y2="18" />
-                            <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                    </button>
-                {% endif %}
-            </div>
-            <div class="collection-content mx-3 mb-3">
-                {{ form_widget(form) }}
-                {{ form_errors(form) }}
-                {{ form_rest(form) }}
+        <div {% if not row_attr.class|default(false) %}class="pt-0 mb-3"{% endif%} data-arkounay--ux-collection--collection-target="collectionElement" {% for k, v in row_attr|default %}{{ k }}="{{ v }}"{% endfor %}>
+            <div class="{{ form.parent.vars.entry_class|default }}">
+                <div class="btn-collection-container d-flex">
+                    {% if form.parent.vars.display_sort_buttons|default(false) %}
+                        <button data-action="arkounay--ux-collection--collection#moveUp" data-arkounay--ux-collection--collection-target="up" class="collection-up btn btn-collection">
+                            {% if form.parent.vars.icon_up|default(false) %}
+                                {{ form.parent.vars.icon_up|raw }}
+                            {% else %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <line x1="12" y1="5" x2="12" y2="19" />
+                                    <line x1="18" y1="11" x2="12" y2="5" />
+                                    <line x1="6" y1="11" x2="12" y2="5" />
+                                </svg>
+                            {% endif %}
+                        </button>
+                        <button data-action="arkounay--ux-collection--collection#moveDown" data-arkounay--ux-collection--collection-target="down" class="collection-down btn btn-collection">
+                            {% if form.parent.vars.icon_down|default(false) %}
+                                {{ form.parent.vars.icon_down|raw }}
+                            {% else %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <line x1="12" y1="5" x2="12" y2="19" />
+                                    <line x1="18" y1="13" x2="12" y2="19" />
+                                    <line x1="6" y1="13" x2="12" y2="19" />
+                                </svg>
+                            {% endif %}
+                        </button>
+                    {% endif %}
+                    <div class="w-100"></div>
+                    {% if form.parent.vars.allow_delete %}
+                        <button data-arkounay--ux-collection--collection-target="delete" data-action="arkounay--ux-collection--collection#remove" class="collection-remove btn btn-collection btn-collection-remove align-self-end">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
+                    {% endif %}
+                </div>
+                <div class="{{ form.parent.vars.entry_element_class|default }}">
+                    {{ form_widget(form) }}
+                    {{ form_errors(form) }}
+                    {{ form_rest(form) }}
+                </div>
             </div>
         </div>
     {% endapply %}

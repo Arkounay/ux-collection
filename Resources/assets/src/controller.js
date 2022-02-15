@@ -33,9 +33,11 @@ export default class extends Controller {
         if (this.allowDragAndDropValue) {
             Sortable.create(this.element, {
                 draggable: '[data-arkounay--ux-collection--collection-target="collectionElement"]',
+                filter: "input,textarea",
+                preventOnFilter: false,
                 onSort: () => {
                     this.#change();
-                }
+                },
             });
         }
 
