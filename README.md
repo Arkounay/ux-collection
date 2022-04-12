@@ -66,6 +66,7 @@ e.g:
 - **allow_drag_and_drop**: will allow the user to change item positions using drag and drop (default true)
 - **display_sort_buttons**: will display arrow up and down buttons to change item positions (default true)
 - **add_label**: The add button label (default "Add")
+- **position_selector**: If a dom selector is specified and it's targetting an input that is located inside a collection item, it will change this input's value and insert its current position (starting from 0) instead of changing the input's name.
 - **min**: The number of minimum items within the collection. When a collection has `allow_add` set to `true` and has less items than `min` upon creation, empty items will be added and the remove button will remain hidden until more items are created. (default 1)
 - **max**: The number of maximum items within the collection. When the collection reaches the maximum number of items, the add button will be hidden. (default null - no limit)
 
@@ -73,7 +74,7 @@ e.g:
 
 UxCollection allows you to extend its default behavior using a custom Stimulus controller, ie `custom_collection_controller.js`: 
 ```js
-import { Controller } from 'stimulus';
+import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
     
@@ -124,3 +125,7 @@ public function buildForm(FormBuilderInterface $builder, array $options)
     ;
 }
 ```
+
+### Using a position input
+
+
