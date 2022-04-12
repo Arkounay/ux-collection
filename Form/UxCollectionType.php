@@ -21,6 +21,7 @@ class UxCollectionType extends AbstractType
         'entry_element_class' => 'collection-content mx-3 mb-3',
         'icon_up' => false,
         'icon_down' => false,
+        'position_selector' => null,
         'min' => 1,
         'max' => null,
     ];
