@@ -70,7 +70,7 @@ e.g:
 - **min**: The number of minimum items within the collection. When a collection has `allow_add` set to `true` and has less items than `min` upon creation, empty items will be added and the remove button will remain hidden until more items are created. (default 1)
 - **max**: The number of maximum items within the collection. When the collection reaches the maximum number of items, the add button will be hidden. (default null - no limit)
 
-### Nested collection
+### Nested collections
 
 [When using nested collections, remember to change the `prototype_name` of the child's collection. It needs to be different than the parent's collection (that defaults to `__name__`)](https://symfony.com/doc/current/reference/forms/types/collection.html#prototype-name)
 
