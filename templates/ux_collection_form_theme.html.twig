@@ -66,10 +66,16 @@
         {% set attr = attr|merge({'class': attr.class|default('collection arkounay-ux-collection')}) %}
         {% set attr = attr|merge({'data-controller': (attr['data-controller']|default('') ~ ' arkounay--ux-collection--collection')|trim}) %}
         {% set attr = attr|merge({'data-arkounay--ux-collection--collection-allow-drag-and-drop-value': allow_drag_and_drop}) %}
+        {% if drag_and_drop_filter is not null %}
+            {% set attr = attr|merge({'data-arkounay--ux-collection--collection-drag-and-drop-filter-value': drag_and_drop_filter}) %}
+        {% endif %}
+        {% if drag_and_drop_prevent_on_filter is not null %}
+            {% set attr = attr|merge({'data-arkounay--ux-collection--collection-drag-and-drop-prevent-on-filter-value': drag_and_drop_prevent_on_filter|json_encode}) %}
+        {% endif %}
         {% if position_selector|default(false) %}
             {% set attr = attr|merge({'data-arkounay--ux-collection--collection-position-selector-value': position_selector}) %}
         {% endif %}
-        {% set attr = attr|merge({'data-arkounay--ux-collection--collection-display-sort-buttons-value': display_sort_buttons}) %}
+        {% set attr = attr|merge({'data-arkounay--ux-collection--collection-display-sort-buttons-value': display_sort_buttons|json_encode}) %}
         {% set attr = attr|merge({'data-arkounay--ux-collection--collection-min-value': min}) %}
         {% if max is not null %}
             {% set attr = attr|merge({'data-arkounay--ux-collection--collection-max-value': max}) %}

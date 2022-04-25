@@ -50,6 +50,7 @@ e.g:
                 'allow_add' => true,
                 'allow_delete' => true,
                 'allow_drag_and_drop' => true,
+                'drag_and_drop_filter' => 'input,textarea,a,button,label',
                 'display_sort_buttons' => true,
                 'add_label' => 'Add an item',
                 'min' => 3,
@@ -64,6 +65,8 @@ e.g:
 - **allow_add**: will display the Add button (default true)
 - **allow_delete**: will display the Delete button (default true)
 - **allow_drag_and_drop**: will allow the user to change item positions using drag and drop (default true)
+- **drag_and_drop_filter**: when drag and drop is allowed, selectors that do not lead to dragging (default true) 
+- **drag_and_drop_prevent_on_filter**: when drag and drop is allowed, calls `event.preventDefault()` when triggered `filter` (default false)
 - **display_sort_buttons**: will display arrow up and down buttons to change item positions (default true)
 - **add_label**: The add button label (default "Add")
 - **min**: The number of minimum items within the collection. When a collection has `allow_add` set to `true` and has less items than `min` upon creation, empty items will be added and the remove button will remain hidden until more items are created. (default 1)

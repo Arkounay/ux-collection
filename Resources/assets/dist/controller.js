@@ -96,14 +96,22 @@ var _default = /*#__PURE__*/function (_Controller) {
       }
 
       if (this.allowDragAndDropValue) {
-        _sortablejs["default"].create(this.element, {
+        var sortableOptions = {
           draggable: '[data-arkounay--ux-collection--collection-target="collectionElement"]',
-          filter: "input,textarea",
-          preventOnFilter: false,
           onSort: function onSort() {
             _classPrivateMethodGet(_this2, _change, _change2).call(_this2);
           }
-        });
+        };
+
+        if (this.hasDragAndDropPreventOnFilterValue) {
+          sortableOptions.preventOnFilter = this.dragAndDropPreventOnFilterValue;
+        }
+
+        if (this.hasDragAndDropFilterValue) {
+          sortableOptions.filter = this.dragAndDropFilterValue;
+        }
+
+        _sortablejs["default"].create(this.element, sortableOptions);
       }
 
       _classPrivateMethodGet(this, _change, _change2).call(this);
@@ -321,6 +329,8 @@ _defineProperty(_default, "values", {
   min: Number,
   max: Number,
   allowDragAndDrop: Boolean,
+  dragAndDropFilter: String,
+  dragAndDropPreventOnFilter: Boolean,
   displaySortButtons: Boolean,
   positionSelector: String
 });

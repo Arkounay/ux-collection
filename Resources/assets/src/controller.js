@@ -1,6 +1,6 @@
 'use strict';
 
-import { Controller } from '@hotwired/stimulus';
+import {Controller} from '@hotwired/stimulus';
 import Sortable from 'sortablejs';
 
 export default class extends Controller {
@@ -11,6 +11,8 @@ export default class extends Controller {
         min: Number,
         max: Number,
         allowDragAndDrop: Boolean,
+        dragAndDropFilter: String,
+        dragAndDropPreventOnFilter: Boolean,
         displaySortButtons: Boolean,
         positionSelector: String
     }
@@ -32,14 +34,19 @@ export default class extends Controller {
         }
 
         if (this.allowDragAndDropValue) {
-            Sortable.create(this.element, {
+            const sortableOptions = {
                 draggable: '[data-arkounay--ux-collection--collection-target="collectionElement"]',
-                filter: "input,textarea",
-                preventOnFilter: false,
                 onSort: () => {
                     this.#change();
                 },
-            });
+            };
+            if (this.hasDragAndDropPreventOnFilterValue) {
+                sortableOptions.preventOnFilter = this.dragAndDropPreventOnFilterValue;
+            }
+            if (this.hasDragAndDropFilterValue) {
+                sortableOptions.filter = this.dragAndDropFilterValue;
+            }
+            Sortable.create(this.element, sortableOptions);
         }
 
         this.#change();
