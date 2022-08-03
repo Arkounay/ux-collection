@@ -275,6 +275,9 @@ function _change2() {
   } // hide add button if there is a max value
 
 
+  console.log(this.hasMaxValue && this.hasAddTarget);
+  console.log(this.maxValue);
+
   if (this.hasMaxValue && this.hasAddTarget) {
     if (this.length >= this.maxValue) {
       this.addTarget.classList.add('d-none');
