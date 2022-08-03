@@ -2,7 +2,7 @@
     "name": "@arkounay/ux-collection",
     "description": "Collection for Symfony forms",
     "license": "MIT",
-    "version": "2.0.0",
+    "version": "2.2.1",
     "symfony": {
         "controllers": {
             "collection": {
