@@ -94,3 +94,14 @@
         </div>
     {% endapply %}
 {% endblock %}
+
+{% block ux_tabbed_collection_row %}
+    {{ form_label(form, null, {required: false}) }}
+    <div data-controller="arkounay--ux-collection--tabbed-collection" data-arkounay--ux-collection--tabbed-collection-empty-tab-name-value="{{ empty_tab_name }}">
+        <ul class="nav nav-tabs" role="tablist" data-arkounay--ux-collection--tabbed-collection-target="tabs">
+        </ul>
+        {{ form_widget(form) }}
+    </div>
+    {{ form_help(form) }}
+    {{ form_errors(form) }}
+{% endblock %}
