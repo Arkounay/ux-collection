@@ -69,6 +69,8 @@ e.g:
 - **drag_and_drop_prevent_on_filter**: when drag and drop is allowed, calls `event.preventDefault()` when triggered `filter` (default false)
 - **display_sort_buttons**: will display arrow up and down buttons to change item positions (default true)
 - **add_label**: The add button label (default "Add")
+- **add_wrapper_class**: The class used on the add button wrapper (default "mb-3")
+- **add_class**: The class used on the add button (default "btn btn-outline-secondary collection-add")
 - **position_selector**: If a dom selector is specified and it's targetting an input that is located inside a collection item, it will change this input's value and insert its current position (starting from 0) instead of changing the input's name.
 - **min**: The number of minimum items within the collection. When a collection has `allow_add` set to `true` and has less items than `min` upon creation, empty items will be added and the remove button will remain hidden until more items are created. (default 1)
 - **max**: The number of maximum items within the collection. When the collection reaches the maximum number of items, the add button will be hidden. (default null - no limit)
@@ -132,3 +134,24 @@ public function buildForm(FormBuilderInterface $builder, array $options)
     ;
 }
 ```
+
+### EasyAdmin integration
+
+For easyadmin 3+ you need to manually specify the form theme by overriding configureCrud in your DashboardController to add the theme `@ArkounayUxCollection/ux_collection_form_theme.html.twig`
+```php
+public function configureCrud(): Crud
+{
+    return Crud::new()->addFormTheme('@ArkounayUxCollection/ux_collection_form_theme.html.twig');
+}
+```
+
+You will need to configure your admin to use WebpackEncore so Symfony UX is taken into account, for example:
+```php
+public function configureAssets(Assets $assets): Assets
+{
+    return parent::configureAssets($assets)
+        ->addWebpackEncoreEntry('app');
+}
+```
+
+And then create a custom Field as usual.

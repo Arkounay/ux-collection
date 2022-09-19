@@ -21,6 +21,8 @@ class UxCollectionType extends AbstractType
         'display_sort_buttons' => true,
         'entry_class' => 'card',
         'entry_element_class' => 'collection-content mx-3 mb-3',
+        'add_wrapper_class' => 'mb-3',
+        'add_class' => 'btn btn-outline-secondary collection-add',
         'icon_up' => false,
         'icon_down' => false,
         'position_selector' => null,
