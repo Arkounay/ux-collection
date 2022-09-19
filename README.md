@@ -134,3 +134,24 @@ public function buildForm(FormBuilderInterface $builder, array $options)
     ;
 }
 ```
+
+### EasyAdmin integration
+
+For easyadmin 3+ you need to manually specify the form theme by overriding configureCrud in your DashboardController to add the theme `@ArkounayUxCollection/ux_collection_form_theme.html.twig`
+```php
+public function configureCrud(): Crud
+{
+    return Crud::new()->addFormTheme('@ArkounayUxCollection/ux_collection_form_theme.html.twig');
+}
+```
+
+You will need to configure your admin to use WebpackEncore so Symfony UX is taken into account, for example:
+```php
+public function configureAssets(Assets $assets): Assets
+{
+    return parent::configureAssets($assets)
+        ->addWebpackEncoreEntry('app');
+}
+```
+
+And then create a custom Field as usual.
