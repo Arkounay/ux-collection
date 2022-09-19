@@ -1,4 +1,4 @@
-.arkounay-ux-collection .sortable-ghost > div {
+.arkounay-ux-collection:not(.ux-media-collection--no-highlight) .sortable-ghost > div {
     border: 2px solid #86b7fe !important;
 }
 
