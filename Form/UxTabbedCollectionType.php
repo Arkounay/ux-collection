@@ -7,6 +7,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * A tabbed collection (works only with bootstrap enabled)
+ */
 class UxTabbedCollectionType extends AbstractType
 {
 
@@ -19,7 +22,8 @@ class UxTabbedCollectionType extends AbstractType
             'entry_options' => [
                 'row_attr' => ['data-arkounay--ux-collection--tabbed-collection-target' => 'collectionElement', 'class' => 'pt-0 mb-2 mb-3 tab-pane'],
             ],
-            'empty_tab_name' => 'Nouvel élément'
+            'row_attr' => ['class' => 'arkounay-ux-collection arkounay-ux-collection--tabbed'],
+            'empty_tab_name' => 'New item'
         ]);
     }
 

@@ -27,7 +27,7 @@ class UxHorizontalCollectionType extends UxCollectionType
     {
         parent::configureOptions($resolver);
         $resolver->setDefault('entry_options', ['row_attr' => ['class' => 'col-xl-4 col-lg-6']]);
-        $resolver->setDefault('attr', ['class' => 'collection arkounay-ux-collection row gy-3']);
+        $resolver->setDefault('attr', ['class' => 'collection arkounay-ux-collection arkounay-ux-horizontal-collection row gy-3']);
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options): void

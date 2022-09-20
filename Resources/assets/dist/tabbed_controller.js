@@ -85,7 +85,6 @@ var _default = /*#__PURE__*/function (_Controller) {
   _createClass(_default, [{
     key: "connect",
     value: function connect() {
-      console.log('Hllo');
       this.collectionTarget.addEventListener('ux-collection:change', this._onChange.bind(this));
       this.collectionTarget.addEventListener('ux-collection:add', this._onAdd.bind(this));
 
@@ -223,8 +222,9 @@ function _generateTabs2() {
   this.collectionElementTargets.forEach(function (element, index) {
     tabs += _classPrivateMethodGet(_this4, _generateTab, _generateTab2).call(_this4, element, index);
   });
+  var maxValue = this.collectionTarget.dataset['arkounay-UxCollection-CollectionMaxValue'];
 
-  if (this.collectionTarget.dataset.allowAdd == 1) {
+  if (this.collectionTarget.dataset.allowAdd == 1 && (!maxValue || this.collectionElementTargets.length < maxValue)) {
     var addButton = this.collectionTarget.querySelector('[data-arkounay--ux-collection--collection-target="add"]');
     var addButtonIcon = addButton.querySelector('svg').outerHTML;
     var isEmpty = this.collectionElementTargets.length === 0;
@@ -246,9 +246,10 @@ function _generateTab2(target, i) {
     name = this.emptyTabNameValue;
   }
 
+  var minValue = this.collectionTarget.dataset['arkounay-UxCollection-CollectionMinValue'];
   var removeButton = '';
 
-  if (this.collectionTarget.dataset.allowRemove == 1) {
+  if (this.collectionTarget.dataset.allowRemove == 1 && (!minValue || this.collectionElementTargets.length > minValue)) {
     removeButton = "<button class=\"ms-3 btn-sm btn-close\" data-action=\"arkounay--ux-collection--tabbed-collection#remove\"></button>";
   }
 
