@@ -1,6 +1,6 @@
 'use strict';
 
-import { Controller } from '@hotwired/stimulus';
+import {Controller} from '@hotwired/stimulus';
 import Sortable from 'sortablejs';
 
 export default class extends Controller {
@@ -11,7 +11,10 @@ export default class extends Controller {
         min: Number,
         max: Number,
         allowDragAndDrop: Boolean,
-        displaySortButtons: Boolean
+        dragAndDropFilter: String,
+        dragAndDropPreventOnFilter: Boolean,
+        displaySortButtons: Boolean,
+        positionSelector: String
     }
 
     prototype;
@@ -31,12 +34,19 @@ export default class extends Controller {
         }
 
         if (this.allowDragAndDropValue) {
-            Sortable.create(this.element, {
+            const sortableOptions = {
                 draggable: '[data-arkounay--ux-collection--collection-target="collectionElement"]',
                 onSort: () => {
                     this.#change();
-                }
-            });
+                },
+            };
+            if (this.hasDragAndDropPreventOnFilterValue) {
+                sortableOptions.preventOnFilter = this.dragAndDropPreventOnFilterValue;
+            }
+            if (this.hasDragAndDropFilterValue) {
+                sortableOptions.filter = this.dragAndDropFilterValue;
+            }
+            Sortable.create(this.element, sortableOptions);
         }
 
         this.#change();
@@ -112,10 +122,29 @@ export default class extends Controller {
     }
 
     #change() {
-        // refresh form names
-        for (let i = 0; i < this.length; i++) {
-            for (const input of this.collectionElementTargets[i].querySelectorAll([`[name^="${this.namePrefix}["]`])) {
-                input.name = input.name.replaceAll(new RegExp(`${this.namePrefix}[\\d+]`.replaceAll('[', '\\[').replaceAll(']', '\\]'), 'g'), `${this.namePrefix}[${i}]`);
+        this._dispatchEvent('ux-collection:before-change');
+
+        if (this.hasPositionSelectorValue) {
+            for (let i = 0; i < this.length; i++) {
+                this.collectionElementTargets[i].querySelector(this.positionSelectorValue).value = i;
+            }
+        } else {
+            // refresh all form names if no position fields
+            for (let i = 0; i < this.length; i++) {
+                for (const input of this.collectionElementTargets[i].querySelectorAll([`[name^="${this.namePrefix}["]`])) {
+                    const newName = input.name.replaceAll(new RegExp(`${this.namePrefix}[\\d+]`.replaceAll('[', '\\[').replaceAll(']', '\\]'), 'g'), `${this.namePrefix}[${i}]`).replaceAll('_ux_collection_tmp_swap', '');
+
+                    // if a radio's name changes to an already existing name, it might uncheck the one which has the same name.
+                    // to prevent this I append _ux_collection_tmp_swap to get a temporary name. It'll get changed back when reassigning names
+                    const inputsWithSameName = this.element.querySelectorAll(`[name="${newName}"]`);
+                    for (const inputWithSameName of inputsWithSameName) {
+                        if (this.#getCollectionItemFromTarget(inputWithSameName) !== this.collectionElementTargets[i]) {
+                            inputWithSameName.name += '_ux_collection_tmp_swap';
+                        }
+                    }
+
+                    input.name = newName;
+                }
             }
         }
 
@@ -146,12 +175,14 @@ export default class extends Controller {
         }
 
         // hide remove button if there is a min value
-        if (this.hasMinValue && this.deleteTargets.length > 0) {
+        if (this.hasMinValue && this.hasMinValue > 0 && this.deleteTargets.length > 0) {
             const hideDelete = this.length <= this.minValue;
-            if (hideDelete) {
-                this.collectionElementTargets[0].classList.add('pt-3')
-            } else {
-                this.collectionElementTargets[0].classList.remove('pt-3')
+            for (let i = 0; i < this.collectionElementTargets.length; i++) {
+                if (hideDelete) {
+                    this.collectionElementTargets[i].classList.add('collection-hide-delete')
+                } else {
+                    this.collectionElementTargets[i].classList.remove('collection-hide-delete')
+                }
             }
             for (let i = 0; i < this.deleteTargets.length; i++) {
                 if (hideDelete) {
@@ -169,10 +200,8 @@ export default class extends Controller {
         return this.collectionElementTargets.length;
     }
 
-    _dispatchEvent(name, payload = null, canBubble = false, cancelable = false) {
-        const userEvent = document.createEvent('CustomEvent');
-        userEvent.initCustomEvent(name, canBubble, cancelable, payload);
-        this.element.dispatchEvent(userEvent);
+    _dispatchEvent(name, payload) {
+        this.element.dispatchEvent(new CustomEvent(name, { detail: payload }));
     }
 
 }

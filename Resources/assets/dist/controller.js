@@ -1,6 +1,6 @@
 'use strict';
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -23,9 +23,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
@@ -96,12 +96,22 @@ var _default = /*#__PURE__*/function (_Controller) {
       }
 
       if (this.allowDragAndDropValue) {
-        _sortablejs["default"].create(this.element, {
+        var sortableOptions = {
           draggable: '[data-arkounay--ux-collection--collection-target="collectionElement"]',
           onSort: function onSort() {
             _classPrivateMethodGet(_this2, _change, _change2).call(_this2);
           }
-        });
+        };
+
+        if (this.hasDragAndDropPreventOnFilterValue) {
+          sortableOptions.preventOnFilter = this.dragAndDropPreventOnFilterValue;
+        }
+
+        if (this.hasDragAndDropFilterValue) {
+          sortableOptions.filter = this.dragAndDropFilterValue;
+        }
+
+        _sortablejs["default"].create(this.element, sortableOptions);
       }
 
       _classPrivateMethodGet(this, _change, _change2).call(this);
@@ -196,13 +206,10 @@ var _default = /*#__PURE__*/function (_Controller) {
     }
   }, {
     key: "_dispatchEvent",
-    value: function _dispatchEvent(name) {
-      var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-      var canBubble = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      var cancelable = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      var userEvent = document.createEvent('CustomEvent');
-      userEvent.initCustomEvent(name, canBubble, cancelable, payload);
-      this.element.dispatchEvent(userEvent);
+    value: function _dispatchEvent(name, payload) {
+      this.element.dispatchEvent(new CustomEvent(name, {
+        detail: payload
+      }));
     }
   }]);
 
@@ -216,39 +223,69 @@ function _getCollectionItemFromTarget2(target) {
 }
 
 function _change2() {
-  // refresh form names
-  for (var i = 0; i < this.length; i++) {
-    var _iterator = _createForOfIteratorHelper(this.collectionElementTargets[i].querySelectorAll(["[name^=\"".concat(this.namePrefix, "[\"]")])),
-        _step;
+  this._dispatchEvent('ux-collection:before-change');
 
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var input = _step.value;
-        input.name = input.name.replaceAll(new RegExp("".concat(this.namePrefix, "[\\d+]").replaceAll('[', '\\[').replaceAll(']', '\\]'), 'g'), "".concat(this.namePrefix, "[").concat(i, "]"));
+  if (this.hasPositionSelectorValue) {
+    for (var i = 0; i < this.length; i++) {
+      this.collectionElementTargets[i].querySelector(this.positionSelectorValue).value = i;
+    }
+  } else {
+    // refresh all form names if no position fields
+    for (var _i = 0; _i < this.length; _i++) {
+      var _iterator = _createForOfIteratorHelper(this.collectionElementTargets[_i].querySelectorAll(["[name^=\"".concat(this.namePrefix, "[\"]")])),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var input = _step.value;
+          var newName = input.name.replaceAll(new RegExp("".concat(this.namePrefix, "[\\d+]").replaceAll('[', '\\[').replaceAll(']', '\\]'), 'g'), "".concat(this.namePrefix, "[").concat(_i, "]")).replaceAll('_ux_collection_tmp_swap', ''); // if a radio's name changes to an already existing name, it might uncheck the one which has the same name.
+          // to prevent this I append _ux_collection_tmp_swap to get a temporary name. It'll get changed back when reassigning names
+
+          var inputsWithSameName = this.element.querySelectorAll("[name=\"".concat(newName, "\"]"));
+
+          var _iterator2 = _createForOfIteratorHelper(inputsWithSameName),
+              _step2;
+
+          try {
+            for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+              var inputWithSameName = _step2.value;
+
+              if (_classPrivateMethodGet(this, _getCollectionItemFromTarget, _getCollectionItemFromTarget2).call(this, inputWithSameName) !== this.collectionElementTargets[_i]) {
+                inputWithSameName.name += '_ux_collection_tmp_swap';
+              }
+            }
+          } catch (err) {
+            _iterator2.e(err);
+          } finally {
+            _iterator2.f();
+          }
+
+          input.name = newName;
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
       }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
     }
   } // refresh button positions
 
 
   if (this.upTargets.length > 0) {
     if (this.displaySortButtonsValue) {
-      for (var _i = 0; _i < this.length; _i++) {
-        this.upTargets[_i].classList.remove('d-none');
+      for (var _i2 = 0; _i2 < this.length; _i2++) {
+        this.upTargets[_i2].classList.remove('d-none');
 
-        this.downTargets[_i].classList.remove('d-none');
+        this.downTargets[_i2].classList.remove('d-none');
       }
 
       this.upTargets[0].classList.add('d-none');
       this.downTargets[this.downTargets.length - 1].classList.add('d-none');
     } else {
-      for (var _i2 = 0; _i2 < this.length; _i2++) {
-        this.upTargets[_i2].classList.add('d-none');
+      for (var _i3 = 0; _i3 < this.length; _i3++) {
+        this.upTargets[_i3].classList.add('d-none');
 
-        this.downTargets[_i2].classList.add('d-none');
+        this.downTargets[_i3].classList.add('d-none');
       }
     }
   } // hide add button if there is a max value
@@ -266,20 +303,22 @@ function _change2() {
   } // hide remove button if there is a min value
 
 
-  if (this.hasMinValue && this.deleteTargets.length > 0) {
+  if (this.hasMinValue && this.hasMinValue > 0 && this.deleteTargets.length > 0) {
     var hideDelete = this.length <= this.minValue;
 
-    if (hideDelete) {
-      this.collectionElementTargets[0].classList.add('pt-3');
-    } else {
-      this.collectionElementTargets[0].classList.remove('pt-3');
+    for (var _i4 = 0; _i4 < this.collectionElementTargets.length; _i4++) {
+      if (hideDelete) {
+        this.collectionElementTargets[_i4].classList.add('collection-hide-delete');
+      } else {
+        this.collectionElementTargets[_i4].classList.remove('collection-hide-delete');
+      }
     }
 
-    for (var _i3 = 0; _i3 < this.deleteTargets.length; _i3++) {
+    for (var _i5 = 0; _i5 < this.deleteTargets.length; _i5++) {
       if (hideDelete) {
-        this.deleteTargets[_i3].classList.add('d-none');
+        this.deleteTargets[_i5].classList.add('d-none');
       } else {
-        this.deleteTargets[_i3].classList.remove('d-none');
+        this.deleteTargets[_i5].classList.remove('d-none');
       }
     }
   }
@@ -293,5 +332,8 @@ _defineProperty(_default, "values", {
   min: Number,
   max: Number,
   allowDragAndDrop: Boolean,
-  displaySortButtons: Boolean
+  dragAndDropFilter: String,
+  dragAndDropPreventOnFilter: Boolean,
+  displaySortButtons: Boolean,
+  positionSelector: String
 });
