@@ -2,7 +2,7 @@
     "name": "@arkounay/ux-collection",
     "description": "Collection for Symfony forms",
     "license": "MIT",
-    "version": "2.2.1",
+    "version": "3.0.0",
     "symfony": {
         "controllers": {
             "collection": {
@@ -13,6 +13,15 @@
                 "autoimport": {
                     "@arkounay/ux-collection/src/style.css": true,
                     "@arkounay/ux-collection/src/style-when-not-using-bootstrap-5.css": true
+                }
+            },
+            "tabbed_collection": {
+                "main": "dist/tabbed_controller.js",
+                "webpackMode": "eager",
+                "fetch": "eager",
+                "enabled": true,
+                "autoimport": {
+                    "@arkounay/ux-collection/src/tabbed-style.css": true
                 }
             }
         }

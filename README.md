@@ -33,7 +33,7 @@ If you're using bootstrap 5, you should disable the sandalone CSS import in `ass
 
 ## Usage
 
-In a form, use UxCollectionType. It works like a classic CollectionType except it has more options :
+In a form, use **UxCollectionType**. It works like a classic CollectionType except it has more options :
 e.g: 
 
 ```php
@@ -154,4 +154,8 @@ public function configureAssets(Assets $assets): Assets
 }
 ```
 
-And then create a custom Field as usual.
+## Extra collections type
+
+There is also **UxHorizontalCollectionType** for collections that need to move horizontally, and **UxTabbedCollectionType** that creates a tab-type collection (works only when bootstrap's used in your project for now, and you will probably need to override the base css a bit for this one - here's a [QuickAdminGeneratorBundle](https://github.com/arkounay/QuickAdminGeneratorBundle) integration example)
+
+![tabbed-demo-gif](https://github.com/arkounay/ux-collection/raw/master/doc/tabbed-demo.gif)

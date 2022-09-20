@@ -1,0 +1,36 @@
+.arkounay-ux-collection--tabbed .btn-collection-remove {
+    display: none;
+}
+
+.arkounay-ux-collection--tabbed .collection-add {
+    display: none;
+}
+
+.arkounay-ux-collection--tabbed .btn-collection-container {
+    top: -33px;
+}
+
+.arkounay-ux-collection--tabbed .nav-action-add {
+    margin-right: 70px;
+}
+
+.arkounay-ux-collection--tabbed .nav-tabs-empty {
+    border: none;
+    margin-bottom: 20px;
+}
+
+.arkounay-ux-collection--tabbed .nav-tabs-empty .nav-link {
+    border: 1px solid #626976;
+    border-radius: 4px;
+    height: 40px;
+    transition: all 100ms linear;
+}
+
+.arkounay-ux-collection--tabbed .nav-tabs-empty .nav-link:hover {
+    border-color: #626976;
+    color: black;
+}
+
+.arkounay-ux-collection--tabbed .nav-tabs-empty .nav-link svg {
+    margin-right: 5px;
+}
