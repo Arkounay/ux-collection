@@ -158,4 +158,4 @@ public function configureAssets(Assets $assets): Assets
 
 There is also **UxHorizontalCollectionType** for collections that need to move horizontally, and **UxTabbedCollectionType** that creates a tab-type collection (works only when bootstrap's used in your project for now, and you will probably need to override the base css a bit for this one - here's a [QuickAdminGeneratorBundle](https://github.com/arkounay/QuickAdminGeneratorBundle) integration example)
 
-![tabbed-demo-gif](https://github.com/arkounay/ux-collection/raw/master/doc/tabbed-demo.gif)
+![tabbed-demo-gif](https://raw.githubusercontent.com/Arkounay/ux-collection/master/doc/demo-tabbed.gif)
