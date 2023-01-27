@@ -1,16 +1,18 @@
-import { Controller } from '@hotwired/stimulus';
+import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
 
     static targets = ['collection', 'collectionElement', 'tabs', 'tabButton']
 
     static values = {
-        emptyTabName: String
+        emptyTabName: String,
+        id: String
     }
 
     connect() {
         this.collectionTarget.addEventListener('ux-collection:change', this._onChange.bind(this));
         this.collectionTarget.addEventListener('ux-collection:add', this._onAdd.bind(this));
+        this.addButton.parentNode.hidden = true;
         this.#generateTabs();
         this.#setActive(0);
         for (const collectionElement of this.collectionElementTargets) {
@@ -45,6 +47,11 @@ export default class extends Controller {
         this.#setActive(this.collectionElementTargets.length - 1);
         this.#addCollectionElementListeners(event.detail);
         document.querySelectorAll('.tooltip').forEach(e => e.remove());
+        const deleteButton = event.detail.querySelector(`[data-collection-id="${this.idValue}"][data-arkounay--ux-collection--collection-target="delete"]`);
+        if (deleteButton) {
+            deleteButton.hidden = true;
+        }
+
     }
 
     #addCollectionElementListeners(collectionElement) {
@@ -69,12 +76,12 @@ export default class extends Controller {
     remove(e) {
         // get index
         const index = this.tabButtonTargets.indexOf(e.target.closest('.nav-link'));
-        this.collectionElementTargets[index].querySelector('[data-arkounay--ux-collection--collection-target="delete"]').click();
+        this.collectionElementTargets[index].querySelector(`[data-collection-id="${this.idValue}"][data-arkounay--ux-collection--collection-target="delete"]`).click();
     }
 
     add(e) {
         e.preventDefault();
-        this.collectionTarget.querySelector('[data-arkounay--ux-collection--collection-target="add"]').click();
+        this.addButton.click();
     }
 
     /**
@@ -93,11 +100,10 @@ export default class extends Controller {
 
         const maxValue = this.collectionTarget.dataset['arkounay-UxCollection-CollectionMaxValue'];
         if (this.collectionTarget.dataset.allowAdd == 1 && (!maxValue || this.collectionElementTargets.length < maxValue)) {
-            const addButton = this.collectionTarget.querySelector('[data-arkounay--ux-collection--collection-target="add"]')
-            const addButtonIcon = addButton.querySelector('svg').outerHTML;
+            const addButtonIcon = this.addButton.querySelector('svg').outerHTML;
             const isEmpty = (this.collectionElementTargets.length === 0);
-            let addButtonText = isEmpty ? addButton.textContent : '';
-            let tooltip = isEmpty ? '' : `data-controller="tooltip" data-bs-placement="right" title="${addButton.textContent}"`;
+            let addButtonText = isEmpty ? this.addButton.textContent : '';
+            let tooltip = isEmpty ? '' : `data-controller="tooltip" data-bs-placement="right" title="${this.addButton.textContent}"`;
             tabs += `<li class="nav-item nav-action-add"><a ${tooltip} href="#" class="nav-link" data-action="arkounay--ux-collection--tabbed-collection#add" type="button" role="tab">${addButtonIcon} ${addButtonText}</a></li>`
         }
 
@@ -136,6 +142,10 @@ export default class extends Controller {
         });
 
         this.collectionElementTargets[index]?.classList.add('active');
+    }
+
+    get addButton() {
+        return this.collectionTarget.querySelector(`[data-collection-id="${this.idValue}"][data-arkounay--ux-collection--collection-target="add"]`);
     }
 
 }

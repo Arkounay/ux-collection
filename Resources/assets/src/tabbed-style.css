@@ -1,12 +1,4 @@
-.arkounay-ux-collection--tabbed .btn-collection-remove {
-    display: none;
-}
-
-.arkounay-ux-collection--tabbed .collection-add {
-    display: none;
-}
-
-.arkounay-ux-collection--tabbed .btn-collection-container {
+.arkounay-ux-collection--tabbed .btn-tabbed-collection-container {
     top: -33px;
 }
 

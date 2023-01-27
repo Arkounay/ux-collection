@@ -73,8 +73,6 @@ var _default = /*#__PURE__*/function (_Controller) {
 
     _defineProperty(_assertThisInitialized(_this), "prototype", void 0);
 
-    _defineProperty(_assertThisInitialized(_this), "namePrefix", void 0);
-
     return _this;
   }
 
@@ -86,7 +84,6 @@ var _default = /*#__PURE__*/function (_Controller) {
       this.element[this.identifier] = this;
       this.prototype = this.element.dataset.prototype;
       this.prototypeName = this.element.dataset.prototypeName;
-      this.namePrefix = this.element.dataset.namePrefix;
       this.autoIncrement = this.length;
 
       if (this.hasMinValue && this.minValue && this.prototype !== undefined) {
@@ -230,42 +227,75 @@ function _change2() {
       this.collectionElementTargets[i].querySelector(this.positionSelectorValue).value = i;
     }
   } else {
-    // refresh all form names if no position fields
+    var namePrefix = this.element.dataset.namePrefix; // refresh all form names if no position fields
+
     for (var _i = 0; _i < this.length; _i++) {
-      var _iterator = _createForOfIteratorHelper(this.collectionElementTargets[_i].querySelectorAll(["[name^=\"".concat(this.namePrefix, "[\"]")])),
+      var replaceRegExp = new RegExp("".concat(namePrefix, "[\\d+]").replaceAll('[', '\\[').replaceAll(']', '\\]'), 'g');
+
+      var _iterator = _createForOfIteratorHelper(this.collectionElementTargets[_i].querySelectorAll(["[data-name-prefix^=\"".concat(namePrefix, "[\"]")])),
           _step;
 
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var input = _step.value;
-          var newName = input.name.replaceAll(new RegExp("".concat(this.namePrefix, "[\\d+]").replaceAll('[', '\\[').replaceAll(']', '\\]'), 'g'), "".concat(this.namePrefix, "[").concat(_i, "]")).replaceAll('_ux_collection_tmp_swap', ''); // if a radio's name changes to an already existing name, it might uncheck the one which has the same name.
+          var collection = _step.value;
+          // replace data-name-prefix for nested collection, otherwise sub-collections will have a bad namePrefix
+          collection.dataset.namePrefix = collection.dataset.namePrefix.replaceAll(replaceRegExp, "".concat(namePrefix, "[").concat(_i, "]"));
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      var _iterator2 = _createForOfIteratorHelper(this.collectionElementTargets[_i].querySelectorAll(["[data-name-prefix^=\"".concat(namePrefix, "[\"]")])),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var _collection = _step2.value;
+          // replace data-prototype for nested collection, otherwise sub-collections will have a bad inputs
+          _collection.dataset.prototype = _collection.dataset.prototype.replaceAll(replaceRegExp, "".concat(namePrefix, "[").concat(_i, "]"));
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+
+      var _iterator3 = _createForOfIteratorHelper(this.collectionElementTargets[_i].querySelectorAll(["[name^=\"".concat(namePrefix, "[\"]")])),
+          _step3;
+
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var input = _step3.value;
+          var newName = input.name.replaceAll(replaceRegExp, "".concat(namePrefix, "[").concat(_i, "]")).replaceAll('_ux_collection_tmp_swap', ''); // if a radio's name changes to an already existing name, it might uncheck the one which has the same name.
           // to prevent this I append _ux_collection_tmp_swap to get a temporary name. It'll get changed back when reassigning names
 
           var inputsWithSameName = this.element.querySelectorAll("[name=\"".concat(newName, "\"]"));
 
-          var _iterator2 = _createForOfIteratorHelper(inputsWithSameName),
-              _step2;
+          var _iterator4 = _createForOfIteratorHelper(inputsWithSameName),
+              _step4;
 
           try {
-            for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-              var inputWithSameName = _step2.value;
+            for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+              var inputWithSameName = _step4.value;
 
               if (_classPrivateMethodGet(this, _getCollectionItemFromTarget, _getCollectionItemFromTarget2).call(this, inputWithSameName) !== this.collectionElementTargets[_i]) {
                 inputWithSameName.name += '_ux_collection_tmp_swap';
               }
             }
           } catch (err) {
-            _iterator2.e(err);
+            _iterator4.e(err);
           } finally {
-            _iterator2.f();
+            _iterator4.f();
           }
 
           input.name = newName;
         }
       } catch (err) {
-        _iterator.e(err);
+        _iterator3.e(err);
       } finally {
-        _iterator.f();
+        _iterator3.f();
       }
     }
   } // refresh button positions

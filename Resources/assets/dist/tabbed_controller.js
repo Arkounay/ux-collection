@@ -87,6 +87,7 @@ var _default = /*#__PURE__*/function (_Controller) {
     value: function connect() {
       this.collectionTarget.addEventListener('ux-collection:change', this._onChange.bind(this));
       this.collectionTarget.addEventListener('ux-collection:add', this._onAdd.bind(this));
+      this.addButton.parentNode.hidden = true;
 
       _classPrivateMethodGet(this, _generateTabs, _generateTabs2).call(this);
 
@@ -151,25 +152,35 @@ var _default = /*#__PURE__*/function (_Controller) {
       document.querySelectorAll('.tooltip').forEach(function (e) {
         return e.remove();
       });
+      var deleteButton = event.detail.querySelector("[data-collection-id=\"".concat(this.idValue, "\"][data-arkounay--ux-collection--collection-target=\"delete\"]"));
+
+      if (deleteButton) {
+        deleteButton.hidden = true;
+      }
     }
   }, {
     key: "remove",
     value: function remove(e) {
       // get index
       var index = this.tabButtonTargets.indexOf(e.target.closest('.nav-link'));
-      this.collectionElementTargets[index].querySelector('[data-arkounay--ux-collection--collection-target="delete"]').click();
+      this.collectionElementTargets[index].querySelector("[data-collection-id=\"".concat(this.idValue, "\"][data-arkounay--ux-collection--collection-target=\"delete\"]")).click();
     }
   }, {
     key: "add",
     value: function add(e) {
       e.preventDefault();
-      this.collectionTarget.querySelector('[data-arkounay--ux-collection--collection-target="add"]').click();
+      this.addButton.click();
     }
     /**
      * @param collectionElement
      * @returns HTMLInputElement The first input element in a collectionElement will return its name
      */
 
+  }, {
+    key: "addButton",
+    get: function get() {
+      return this.collectionTarget.querySelector("[data-collection-id=\"".concat(this.idValue, "\"][data-arkounay--ux-collection--collection-target=\"add\"]"));
+    }
   }]);
 
   return _default;
@@ -225,11 +236,10 @@ function _generateTabs2() {
   var maxValue = this.collectionTarget.dataset['arkounay-UxCollection-CollectionMaxValue'];
 
   if (this.collectionTarget.dataset.allowAdd == 1 && (!maxValue || this.collectionElementTargets.length < maxValue)) {
-    var addButton = this.collectionTarget.querySelector('[data-arkounay--ux-collection--collection-target="add"]');
-    var addButtonIcon = addButton.querySelector('svg').outerHTML;
+    var addButtonIcon = this.addButton.querySelector('svg').outerHTML;
     var isEmpty = this.collectionElementTargets.length === 0;
-    var addButtonText = isEmpty ? addButton.textContent : '';
-    var tooltip = isEmpty ? '' : "data-controller=\"tooltip\" data-bs-placement=\"right\" title=\"".concat(addButton.textContent, "\"");
+    var addButtonText = isEmpty ? this.addButton.textContent : '';
+    var tooltip = isEmpty ? '' : "data-controller=\"tooltip\" data-bs-placement=\"right\" title=\"".concat(this.addButton.textContent, "\"");
     tabs += "<li class=\"nav-item nav-action-add\"><a ".concat(tooltip, " href=\"#\" class=\"nav-link\" data-action=\"arkounay--ux-collection--tabbed-collection#add\" type=\"button\" role=\"tab\">").concat(addButtonIcon, " ").concat(addButtonText, "</a></li>");
   }
 
@@ -286,5 +296,6 @@ function _setActive2(index) {
 _defineProperty(_default, "targets", ['collection', 'collectionElement', 'tabs', 'tabButton']);
 
 _defineProperty(_default, "values", {
-  emptyTabName: String
+  emptyTabName: String,
+  id: String
 });

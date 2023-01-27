@@ -77,7 +77,8 @@ e.g:
 
 ### Nested collections
 
-[When using nested collections, remember to change the `prototype_name` of the child's collection. It needs to be different than the parent's collection (that defaults to `__name__`)](https://symfony.com/doc/current/reference/forms/types/collection.html#prototype-name)
+- [When using nested collections, remember to change the `prototype_name` of the child's collection. It needs to be different than the parent's collection (that defaults to `__name__`)](https://symfony.com/doc/current/reference/forms/types/collection.html#prototype-name)
+- If you're using `position_selector` in both parent and child collections, make sure they are different
 
 ### Extend the default behavior
 
@@ -137,7 +138,7 @@ public function buildForm(FormBuilderInterface $builder, array $options)
 
 ### EasyAdmin integration
 
-For easyadmin 3+ you need to manually specify the form theme by overriding configureCrud in your DashboardController to add the theme `@ArkounayUxCollection/ux_collection_form_theme.html.twig`
+For [easyadmin](https://github.com/EasyCorp/EasyAdminBundle) 3+ you need to manually specify the form theme by overriding configureCrud in your DashboardController to add the theme `@ArkounayUxCollection/ux_collection_form_theme.html.twig`
 ```php
 public function configureCrud(): Crud
 {
@@ -153,6 +154,11 @@ public function configureAssets(Assets $assets): Assets
         ->addWebpackEncoreEntry('app');
 }
 ```
+
+### QAG integration
+
+This bundle is already included in [QAG](https://github.com/Arkounay/QuickAdminGeneratorBundle) and works out of the box
+
 
 ## Extra collections type
 

@@ -18,13 +18,11 @@ export default class extends Controller {
     }
 
     prototype;
-    namePrefix;
 
     connect() {
         this.element[this.identifier] = this;
         this.prototype = this.element.dataset.prototype;
         this.prototypeName = this.element.dataset.prototypeName;
-        this.namePrefix = this.element.dataset.namePrefix;
         this.autoIncrement = this.length;
 
         if (this.hasMinValue && this.minValue && this.prototype !== undefined) {
@@ -129,10 +127,21 @@ export default class extends Controller {
                 this.collectionElementTargets[i].querySelector(this.positionSelectorValue).value = i;
             }
         } else {
+            const namePrefix = this.element.dataset.namePrefix;
             // refresh all form names if no position fields
             for (let i = 0; i < this.length; i++) {
-                for (const input of this.collectionElementTargets[i].querySelectorAll([`[name^="${this.namePrefix}["]`])) {
-                    const newName = input.name.replaceAll(new RegExp(`${this.namePrefix}[\\d+]`.replaceAll('[', '\\[').replaceAll(']', '\\]'), 'g'), `${this.namePrefix}[${i}]`).replaceAll('_ux_collection_tmp_swap', '');
+                const replaceRegExp = new RegExp(`${namePrefix}[\\d+]`.replaceAll('[', '\\[').replaceAll(']', '\\]'), 'g');
+                for (const collection of this.collectionElementTargets[i].querySelectorAll([`[data-name-prefix^="${namePrefix}["]`])) {
+                    // replace data-name-prefix for nested collection, otherwise sub-collections will have a bad namePrefix
+                    collection.dataset.namePrefix = collection.dataset.namePrefix.replaceAll(replaceRegExp, `${namePrefix}[${i}]`);
+                }
+                for (const collection of this.collectionElementTargets[i].querySelectorAll([`[data-name-prefix^="${namePrefix}["]`])) {
+                    // replace data-prototype for nested collection, otherwise sub-collections will have a bad inputs
+                    collection.dataset.prototype = collection.dataset.prototype.replaceAll(replaceRegExp, `${namePrefix}[${i}]`);
+                }
+
+                for (const input of this.collectionElementTargets[i].querySelectorAll([`[name^="${namePrefix}["]`])) {
+                    const newName = input.name.replaceAll(replaceRegExp, `${namePrefix}[${i}]`).replaceAll('_ux_collection_tmp_swap', '');
 
                     // if a radio's name changes to an already existing name, it might uncheck the one which has the same name.
                     // to prevent this I append _ux_collection_tmp_swap to get a temporary name. It'll get changed back when reassigning names

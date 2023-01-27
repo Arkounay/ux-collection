@@ -6,7 +6,7 @@
     {% apply spaceless %}
         <div {% if not row_attr.class|default(false) %}class="pt-0 mb-3"{% endif%} data-arkounay--ux-collection--collection-target="collectionElement" {% for k, v in row_attr|default %}{{ k }}="{{ v }}"{% endfor %}>
             <div class="{{ form.parent.vars.entry_class|default }}">
-                <div class="btn-collection-container d-flex">
+                <div class="btn-collection-container d-flex {{ 'ux_tabbed_collection' in form.parent.vars.block_prefixes ? 'btn-tabbed-collection-container' -}}">
                     {% if form.parent.vars.display_sort_buttons|default(false) %}
                         <button data-action="arkounay--ux-collection--collection#moveUp" data-arkounay--ux-collection--collection-target="up" class="collection-up btn btn-collection">
                             {% if form.parent.vars.icon_up|default(false) %}
@@ -35,7 +35,7 @@
                     {% endif %}
                     <div class="w-100"></div>
                     {% if form.parent.vars.allow_delete %}
-                        <button data-arkounay--ux-collection--collection-target="delete" data-action="arkounay--ux-collection--collection#remove" class="collection-remove btn btn-collection btn-collection-remove align-self-end">
+                        <button data-collection-id="{{ form.parent.vars.id }}" data-arkounay--ux-collection--collection-target="delete" data-action="arkounay--ux-collection--collection#remove" class="collection-remove btn btn-collection btn-collection-remove align-self-end">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                 <line x1="18" y1="6" x2="6" y2="18" />
@@ -89,8 +89,8 @@
             {{- form_rest(form) -}}
 
             {% if allow_add %}
-                <div class="{{ add_wrapper_class }}">
-                    <button class="{{ add_class }}" data-arkounay--ux-collection--collection-target="add" data-action="arkounay--ux-collection--collection#add">
+                <div class="collection-add-wrapper {{ add_wrapper_class }}">
+                    <button class="{{ add_class }}" data-collection-id="{{ id }}" data-arkounay--ux-collection--collection-target="add" data-action="arkounay--ux-collection--collection#add">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                             <line x1="12" y1="5" x2="12" y2="19" />
@@ -106,7 +106,7 @@
 
 {% block ux_tabbed_collection_row %}
     {{ form_label(form, null, {required: false}) }}
-    <div data-controller="arkounay--ux-collection--tabbed-collection" data-arkounay--ux-collection--tabbed-collection-empty-tab-name-value="{{ empty_tab_name|trans }}" {% for k, v in row_attr|default %}{{ k }}="{{ v }}"{% endfor %}>
+    <div data-controller="arkounay--ux-collection--tabbed-collection" data-arkounay--ux-collection--tabbed-collection-id-value="{{ id }}" data-arkounay--ux-collection--tabbed-collection-empty-tab-name-value="{{ empty_tab_name|trans }}" {% for k, v in row_attr|default %}{{ k }}="{{ v }}"{% endfor %}>
         <ul class="nav nav-tabs" role="tablist" data-arkounay--ux-collection--tabbed-collection-target="tabs">
         </ul>
         {{ form_widget(form) }}
