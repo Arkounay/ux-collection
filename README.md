@@ -27,6 +27,13 @@ If you're using bootstrap 5, you should disable the sandalone CSS import in `ass
             "@arkounay/ux-collection/src/style.css": true,
             "@arkounay/ux-collection/src/style-when-not-using-bootstrap-5.css": false
         }
+    },
+    "tabbed_collection": {
+        "enabled": true,
+        "fetch": "eager",
+        "autoimport": {
+            "@arkounay/ux-collection/src/tabbed-style.css": true
+        }
     }
 }
 ```
@@ -68,9 +75,13 @@ e.g:
 - **drag_and_drop_filter**: when drag and drop is allowed, selectors that do not lead to dragging (default true) 
 - **drag_and_drop_prevent_on_filter**: when drag and drop is allowed, calls `event.preventDefault()` when triggered `filter` (default false)
 - **display_sort_buttons**: will display arrow up and down buttons to change item positions (default true)
+- **display_add_button**: will display an add button under the collection list, only if `allow_add` is set to true (default true)
+- **display_insert_button**: will display an insert button under every collection items (so items can be inserted inside the middle of the collection for example), only if `allow_add` is set to true (default true)
 - **add_label**: The add button label (default "Add")
+- **insert_label**: The insert button label (default "Insert")
 - **add_wrapper_class**: The class used on the add button wrapper (default "mb-3")
 - **add_class**: The class used on the add button (default "btn btn-outline-secondary collection-add")
+- **insert_class**: The class used on the insert button (default "btn btn-outline-secondary btn-collection-insert collection-add")
 - **position_selector**: If a dom selector is specified and it's targetting an input that is located inside a collection item, it will change this input's value and insert its current position (starting from 0) instead of changing the input's name.
 - **min**: The number of minimum items within the collection. When a collection has `allow_add` set to `true` and has less items than `min` upon creation, empty items will be added and the remove button will remain hidden until more items are created. (default 1)
 - **max**: The number of maximum items within the collection. When the collection reaches the maximum number of items, the add button will be hidden. (default null - no limit)

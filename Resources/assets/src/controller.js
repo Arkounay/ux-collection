@@ -5,7 +5,7 @@ import Sortable from 'sortablejs';
 
 export default class extends Controller {
 
-    static targets = ['collectionElement', 'up', 'down', 'add', 'delete']
+    static targets = ['collectionElement', 'up', 'down', 'add', 'addWrapper', 'delete', 'insert', 'insertText']
 
     static values = {
         min: Number,
@@ -14,6 +14,7 @@ export default class extends Controller {
         dragAndDropFilter: String,
         dragAndDropPreventOnFilter: Boolean,
         displaySortButtons: Boolean,
+        displayInsertButton: Boolean,
         positionSelector: String
     }
 
@@ -106,12 +107,22 @@ export default class extends Controller {
             }
             this.collectionElementTargets[position].insertAdjacentHTML('afterend', prototype);
         }
-        const added = this.collectionElementTargets[position + 1];
+        return this.#insertedAtPosition(position);
+    }
 
+    insert(e) {
+        e.preventDefault();
+        let prototype = this.prototype.replaceAll(this.prototypeName, this.autoIncrement);
+        const position = this.insertTargets.indexOf(e.currentTarget);
+        this.collectionElementTargets[position].insertAdjacentHTML('afterend', prototype);
+        return this.#insertedAtPosition(position);
+    }
+
+    #insertedAtPosition(position) {
+        const added = this.collectionElementTargets[position + 1];
         this.#change();
         this._dispatchEvent('ux-collection:add', added);
         this.autoIncrement++;
-
         return added;
     }
 
@@ -175,11 +186,29 @@ export default class extends Controller {
         }
 
         // hide add button if there is a max value
-        if (this.hasMaxValue && this.hasAddTarget) {
-            if (this.length >= this.maxValue) {
-                this.addTarget.classList.add('d-none');
-            } else {
-                this.addTarget.classList.remove('d-none');
+        if (this.hasMaxValue) {
+            const hasReachedMaxValue = this.length >= this.maxValue;
+            if (this.hasAddTarget) {
+                this.addTarget.classList.toggle('d-none', hasReachedMaxValue);
+            }
+            if (this.displayInsertButtonValue) {
+                for (const insertTarget of this.insertTargets) {
+                    insertTarget.classList.toggle('d-none', hasReachedMaxValue);
+                }
+                for (const element of this.collectionElementTargets) {
+                    element.classList.toggle('collection-element-with-insert', !hasReachedMaxValue);
+                    element.classList.toggle('mb-3', hasReachedMaxValue);
+                }
+            }
+        }
+
+        if (this.displayInsertButtonValue) {
+            this.addWrapperTarget.classList.toggle('d-none', this.length > 0)
+            if (this.hasInsertTextTarget) {
+                for (let i = 0; i < this.insertTextTargets.length - 1; i++) {
+                    this.insertTextTargets[i].textContent = this.insertTextTargets[i].dataset.insertText;
+                }
+                this.insertTextTargets[this.insertTextTargets.length - 1].textContent = this.insertTextTargets[this.insertTextTargets.length - 1].dataset.addText;
             }
         }
 
@@ -187,18 +216,10 @@ export default class extends Controller {
         if (this.hasMinValue && this.hasMinValue > 0 && this.deleteTargets.length > 0) {
             const hideDelete = this.length <= this.minValue;
             for (let i = 0; i < this.collectionElementTargets.length; i++) {
-                if (hideDelete) {
-                    this.collectionElementTargets[i].classList.add('collection-hide-delete')
-                } else {
-                    this.collectionElementTargets[i].classList.remove('collection-hide-delete')
-                }
+                this.collectionElementTargets[i].classList.toggle('collection-hide-delete', hideDelete)
             }
             for (let i = 0; i < this.deleteTargets.length; i++) {
-                if (hideDelete) {
-                    this.deleteTargets[i].classList.add('d-none');
-                } else {
-                    this.deleteTargets[i].classList.remove('d-none');
-                }
+                this.deleteTargets[i].classList.toggle('d-none', hideDelete)
             }
         }
 

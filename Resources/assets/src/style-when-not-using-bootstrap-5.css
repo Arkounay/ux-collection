@@ -23,7 +23,34 @@
     padding-right: 10px;
 }
 
-.arkounay-ux-collection .collection-up, .arkounay-ux-collection .collection-down, .arkounay-ux-collection .collection-remove {
+.arkounay-ux-collection .card {
+    position: relative;
+}
+
+.arkounay-ux-collection .bottom-0 {
+    bottom: 0;
+}
+
+.arkounay-ux-collection .end-0 {
+    right: 0;
+}
+
+.arkounay-ux-collection .btn-collection-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 5px;
+}
+
+.arkounay-ux-collection .position-absolute {
+    position: absolute;
+}
+
+.arkounay-ux-collection .collection-insert {
+    padding: 5px;
+}
+
+.arkounay-ux-collection .collection-up, .arkounay-ux-collection .collection-down, .arkounay-ux-collection, .collection-remove, .collection-insert {
     border: none;
     background: none;
     cursor: pointer;

@@ -1,6 +1,6 @@
 'use strict';
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -23,11 +23,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
@@ -37,7 +37,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _classPrivateMethodInitSpec(obj, privateSet) { _checkPrivateRedeclaration(obj, privateSet); privateSet.add(obj); }
 
@@ -46,6 +46,8 @@ function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollect
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+var _insertedAtPosition = /*#__PURE__*/new WeakSet();
 
 var _getCollectionItemFromTarget = /*#__PURE__*/new WeakSet();
 
@@ -70,6 +72,8 @@ var _default = /*#__PURE__*/function (_Controller) {
     _classPrivateMethodInitSpec(_assertThisInitialized(_this), _change);
 
     _classPrivateMethodInitSpec(_assertThisInitialized(_this), _getCollectionItemFromTarget);
+
+    _classPrivateMethodInitSpec(_assertThisInitialized(_this), _insertedAtPosition);
 
     _defineProperty(_assertThisInitialized(_this), "prototype", void 0);
 
@@ -187,14 +191,16 @@ var _default = /*#__PURE__*/function (_Controller) {
         this.collectionElementTargets[position].insertAdjacentHTML('afterend', prototype);
       }
 
-      var added = this.collectionElementTargets[position + 1];
-
-      _classPrivateMethodGet(this, _change, _change2).call(this);
-
-      this._dispatchEvent('ux-collection:add', added);
-
-      this.autoIncrement++;
-      return added;
+      return _classPrivateMethodGet(this, _insertedAtPosition, _insertedAtPosition2).call(this, position);
+    }
+  }, {
+    key: "insert",
+    value: function insert(e) {
+      e.preventDefault();
+      var prototype = this.prototype.replaceAll(this.prototypeName, this.autoIncrement);
+      var position = this.insertTargets.indexOf(e.currentTarget);
+      this.collectionElementTargets[position].insertAdjacentHTML('afterend', prototype);
+      return _classPrivateMethodGet(this, _insertedAtPosition, _insertedAtPosition2).call(this, position);
     }
   }, {
     key: "length",
@@ -214,6 +220,17 @@ var _default = /*#__PURE__*/function (_Controller) {
 }(_stimulus.Controller);
 
 exports["default"] = _default;
+
+function _insertedAtPosition2(position) {
+  var added = this.collectionElementTargets[position + 1];
+
+  _classPrivateMethodGet(this, _change, _change2).call(this);
+
+  this._dispatchEvent('ux-collection:add', added);
+
+  this.autoIncrement++;
+  return added;
+}
 
 function _getCollectionItemFromTarget2(target) {
   return target.closest('[data-arkounay--ux-collection--collection-target="collectionElement"]');
@@ -321,11 +338,54 @@ function _change2() {
   } // hide add button if there is a max value
 
 
-  if (this.hasMaxValue && this.hasAddTarget) {
-    if (this.length >= this.maxValue) {
-      this.addTarget.classList.add('d-none');
-    } else {
-      this.addTarget.classList.remove('d-none');
+  if (this.hasMaxValue) {
+    var hasReachedMaxValue = this.length >= this.maxValue;
+
+    if (this.hasAddTarget) {
+      this.addTarget.classList.toggle('d-none', hasReachedMaxValue);
+    }
+
+    if (this.displayInsertButtonValue) {
+      var _iterator5 = _createForOfIteratorHelper(this.insertTargets),
+          _step5;
+
+      try {
+        for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+          var insertTarget = _step5.value;
+          insertTarget.classList.toggle('d-none', hasReachedMaxValue);
+        }
+      } catch (err) {
+        _iterator5.e(err);
+      } finally {
+        _iterator5.f();
+      }
+
+      var _iterator6 = _createForOfIteratorHelper(this.collectionElementTargets),
+          _step6;
+
+      try {
+        for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+          var element = _step6.value;
+          element.classList.toggle('collection-element-with-insert', !hasReachedMaxValue);
+          element.classList.toggle('mb-3', hasReachedMaxValue);
+        }
+      } catch (err) {
+        _iterator6.e(err);
+      } finally {
+        _iterator6.f();
+      }
+    }
+  }
+
+  if (this.displayInsertButtonValue) {
+    this.addWrapperTarget.classList.toggle('d-none', this.length > 0);
+
+    if (this.hasInsertTextTarget) {
+      for (var _i4 = 0; _i4 < this.insertTextTargets.length - 1; _i4++) {
+        this.insertTextTargets[_i4].textContent = this.insertTextTargets[_i4].dataset.insertText;
+      }
+
+      this.insertTextTargets[this.insertTextTargets.length - 1].textContent = this.insertTextTargets[this.insertTextTargets.length - 1].dataset.addText;
     }
   } // hide remove button if there is a min value
 
@@ -333,27 +393,19 @@ function _change2() {
   if (this.hasMinValue && this.hasMinValue > 0 && this.deleteTargets.length > 0) {
     var hideDelete = this.length <= this.minValue;
 
-    for (var _i4 = 0; _i4 < this.collectionElementTargets.length; _i4++) {
-      if (hideDelete) {
-        this.collectionElementTargets[_i4].classList.add('collection-hide-delete');
-      } else {
-        this.collectionElementTargets[_i4].classList.remove('collection-hide-delete');
-      }
+    for (var _i5 = 0; _i5 < this.collectionElementTargets.length; _i5++) {
+      this.collectionElementTargets[_i5].classList.toggle('collection-hide-delete', hideDelete);
     }
 
-    for (var _i5 = 0; _i5 < this.deleteTargets.length; _i5++) {
-      if (hideDelete) {
-        this.deleteTargets[_i5].classList.add('d-none');
-      } else {
-        this.deleteTargets[_i5].classList.remove('d-none');
-      }
+    for (var _i6 = 0; _i6 < this.deleteTargets.length; _i6++) {
+      this.deleteTargets[_i6].classList.toggle('d-none', hideDelete);
     }
   }
 
   this._dispatchEvent('ux-collection:change');
 }
 
-_defineProperty(_default, "targets", ['collectionElement', 'up', 'down', 'add', 'delete']);
+_defineProperty(_default, "targets", ['collectionElement', 'up', 'down', 'add', 'addWrapper', 'delete', 'insert', 'insertText']);
 
 _defineProperty(_default, "values", {
   min: Number,
@@ -362,5 +414,6 @@ _defineProperty(_default, "values", {
   dragAndDropFilter: String,
   dragAndDropPreventOnFilter: Boolean,
   displaySortButtons: Boolean,
+  displayInsertButton: Boolean,
   positionSelector: String
 });

@@ -4,7 +4,8 @@
 
 {% block ux_collection_entry_row %}
     {% apply spaceless %}
-        <div {% if not row_attr.class|default(false) %}class="pt-0 mb-3"{% endif%} data-arkounay--ux-collection--collection-target="collectionElement" {% for k, v in row_attr|default %}{{ k }}="{{ v }}"{% endfor %}>
+        {% set allow_insert = form.parent.vars.allow_add and form.parent.vars.display_insert_button %}
+        <div {% if not row_attr.class|default(false) %}class="pt-0 {{ allow_insert ? 'collection-element-with-insert' : 'mb-3' }}"{% endif%} data-arkounay--ux-collection--collection-target="collectionElement" {% for k, v in row_attr|default %}{{ k }}="{{ v }}"{% endfor %}>
             <div class="{{ form.parent.vars.entry_class|default }}">
                 <div class="btn-collection-container d-flex {{ 'ux_tabbed_collection' in form.parent.vars.block_prefixes ? 'btn-tabbed-collection-container' -}}">
                     {% if form.parent.vars.display_sort_buttons|default(false) %}
@@ -49,6 +50,16 @@
                     {{ form_errors(form) }}
                     {{ form_rest(form) }}
                 </div>
+                {% if allow_insert %}
+                    <button class="{{ form.parent.vars.insert_class }}" data-action="arkounay--ux-collection--collection#insert" data-arkounay--ux-collection--collection-target="insert">
+                        <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 5l0 14"></path>
+                            <path d="M5 12l14 0"></path>
+                        </svg>
+                        <span data-arkounay--ux-collection--collection-target="insertText" data-add-text="{{ (add_label|default('Add'))|trans }}" data-insert-text="{{ (insert_label|default('Insert'))|trans }}"></span>
+                    </button>
+                {% endif %}
             </div>
         </div>
     {% endapply %}
@@ -76,6 +87,7 @@
             {% set attr = attr|merge({'data-arkounay--ux-collection--collection-position-selector-value': position_selector}) %}
         {% endif %}
         {% set attr = attr|merge({'data-arkounay--ux-collection--collection-display-sort-buttons-value': display_sort_buttons|json_encode}) %}
+        {% set attr = attr|merge({'data-arkounay--ux-collection--collection-display-insert-button-value': display_insert_button|json_encode}) %}
         {% set attr = attr|merge({'data-arkounay--ux-collection--collection-min-value': min}) %}
         {% if max is not null %}
             {% set attr = attr|merge({'data-arkounay--ux-collection--collection-max-value': max}) %}
@@ -88,8 +100,8 @@
             {{- block('form_rows') -}}
             {{- form_rest(form) -}}
 
-            {% if allow_add %}
-                <div class="collection-add-wrapper {{ add_wrapper_class }}">
+            {% if allow_add and display_add_button %}
+                <div class="collection-add-wrapper {{ add_wrapper_class }}" data-arkounay--ux-collection--collection-target="addWrapper">
                     <button class="{{ add_class }}" data-collection-id="{{ id }}" data-arkounay--ux-collection--collection-target="add" data-action="arkounay--ux-collection--collection#add">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
