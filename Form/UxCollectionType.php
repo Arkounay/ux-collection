@@ -20,7 +20,6 @@ class UxCollectionType extends AbstractType
         'drag_and_drop_filter' => 'input,textarea,a,button,label',
         'drag_and_drop_prevent_on_filter' => false,
         'display_sort_buttons' => true,
-        'display_add_button' => true,
         'display_insert_button' => false,
         'entry_class' => 'card',
         'entry_element_class' => 'collection-content mx-3 mb-3',

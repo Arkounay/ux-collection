@@ -75,7 +75,6 @@ e.g:
 - **drag_and_drop_filter**: when drag and drop is allowed, selectors that do not lead to dragging (default true) 
 - **drag_and_drop_prevent_on_filter**: when drag and drop is allowed, calls `event.preventDefault()` when triggered `filter` (default false)
 - **display_sort_buttons**: will display arrow up and down buttons to change item positions (default true)
-- **display_add_button**: will display an add button under the collection list, only if `allow_add` is set to true (default true)
 - **display_insert_button**: will display an insert button under every collection items (so items can be inserted inside the middle of the collection for example), only if `allow_add` is set to true (default true)
 - **add_label**: The add button label (default "Add")
 - **insert_label**: The insert button label (default "Insert")
