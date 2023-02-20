@@ -10,14 +10,20 @@ Symfony Collections that works out of the box with Symfony UX
 composer require arkounay/ux-collection
 
 # Don't forget to install the JavaScript dependencies as well and compile
+npm install --force
+npm run watch
+
+# or use yarn
 yarn install --force
-yarn encore dev
+yarn watch
 ```
+
+or
 
 Also make sure you have at least version 3.0 of [@symfony/stimulus-bridge](https://github.com/symfony/stimulus-bridge)
 in your `package.json` file.
 
-If you're using bootstrap 5, you should disable the sandalone CSS import in `assets\controllers.json` :
+**If you're using bootstrap 5**, you should disable the sandalone CSS import in `assets\controllers.json` :
 ```json
 "@arkounay/ux-collection": {
     "collection": {
@@ -75,7 +81,7 @@ e.g:
 - **drag_and_drop_filter**: when drag and drop is allowed, selectors that do not lead to dragging (default true) 
 - **drag_and_drop_prevent_on_filter**: when drag and drop is allowed, calls `event.preventDefault()` when triggered `filter` (default false)
 - **display_sort_buttons**: will display arrow up and down buttons to change item positions (default true)
-- **display_insert_button**: will display an insert button under every collection items (so items can be inserted inside the middle of the collection for example), only if `allow_add` is set to true (default true)
+- **display_insert_button**: will display an insert button under every collection items (so items can be inserted inside the middle of the collection for example), only if `allow_add` is set to true (default false)
 - **add_label**: The add button label (default "Add")
 - **insert_label**: The insert button label (default "Insert")
 - **add_wrapper_class**: The class used on the add button wrapper (default "mb-3")
