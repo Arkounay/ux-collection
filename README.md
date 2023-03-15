@@ -87,7 +87,7 @@ e.g:
 - **add_wrapper_class**: The class used on the add button wrapper (default "mb-3")
 - **add_class**: The class used on the add button (default "btn btn-outline-secondary collection-add")
 - **insert_class**: The class used on the insert button (default "btn btn-outline-secondary btn-collection-insert collection-add")
-- **position_selector**: If a dom selector is specified and it's targetting an input that is located inside a collection item, it will change this input's value and insert its current position (starting from 0) instead of changing the input's name.
+- **position_selector**: If a dom selector is specified and it's targetting an input that is located inside a collection item, it will change this input's value and insert its current position (starting from 0) instead of changing the input's name. (ex: `'.position'`)
 - **min**: The number of minimum items within the collection. When a collection has `allow_add` set to `true` and has less items than `min` upon creation, empty items will be added and the remove button will remain hidden until more items are created. (default 1)
 - **max**: The number of maximum items within the collection. When the collection reaches the maximum number of items, the add button will be hidden. (default null - no limit)
 
@@ -151,6 +151,11 @@ public function buildForm(FormBuilderInterface $builder, array $options)
     ;
 }
 ```
+
+### Note about File inputs
+
+If your collection contains File inputs, depending on how you use FileType (e.g if you use a collection of VichUploaderBundle), you might have issues when adding/removing/moving items related to how positionning work. Use the `position_selector` option to fix this.
+
 
 ### EasyAdmin integration
 
