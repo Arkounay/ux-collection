@@ -154,7 +154,7 @@ public function buildForm(FormBuilderInterface $builder, array $options)
 
 ### Note about File inputs
 
-If your collection contains File inputs, depending on how you use FileType (e.g if you use a collection of VichUploaderBundle), you might have issues when adding/removing/moving items related to how positionning work. Use the `position_selector` option to fix this.
+If your collection contains File inputs, depending on how you use FileType (e.g if you use a collection of VichUploaderBundle), you might have issues when adding/removing/moving items related to how positionning work. Use either the `position_selector` option to fix this, or disable sorting by setting `allow_drag_and_drop` and `display_sort_buttons` to `false`: this way the form name will not change.
 
 
 ### EasyAdmin integration

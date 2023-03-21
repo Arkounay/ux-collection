@@ -137,7 +137,7 @@ export default class extends Controller {
             for (let i = 0; i < this.length; i++) {
                 this.collectionElementTargets[i].querySelector(this.positionSelectorValue).value = i;
             }
-        } else {
+        } else if (this.allowDragAndDropValue || this.displaySortButtonsValue || this.displayInsertButtonValue) {
             const namePrefix = this.element.dataset.namePrefix;
             // refresh all form names if no position fields
             for (let i = 0; i < this.length; i++) {

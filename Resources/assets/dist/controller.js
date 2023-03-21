@@ -243,7 +243,7 @@ function _change2() {
     for (var i = 0; i < this.length; i++) {
       this.collectionElementTargets[i].querySelector(this.positionSelectorValue).value = i;
     }
-  } else {
+  } else if (this.allowDragAndDropValue || this.displaySortButtonsValue || this.displayInsertButtonValue) {
     var namePrefix = this.element.dataset.namePrefix; // refresh all form names if no position fields
 
     for (var _i = 0; _i < this.length; _i++) {
