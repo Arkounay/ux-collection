@@ -152,6 +152,17 @@ public function buildForm(FormBuilderInterface $builder, array $options)
 }
 ```
 
+### Listening to changes from a parent stimulus controller
+
+If you have a parent stimulus controller and want to monitor changes in the collection (such as updating a total number of items or adjusting prices in a cart), you can utilize the ux-collection:change dispatched event and directly invoke a parent's controller method. For example if you have a stimulus controller called `parent` wrapping the collection with a `onCollectionChange` method, it will be called if you add the proper action in the form:
+
+```php
+$builder->add('collection', UxCollectionType::class, [
+    // ...
+    'attr' => ['data-action' => 'ux-collection:change->parent#onCollectionChange']
+]);
+```
+
 ### Note about File inputs
 
 If your collection contains File inputs, depending on how you use FileType (e.g if you use a collection of VichUploaderBundle), you might have issues when adding/removing/moving items related to how positionning work. Use either the `position_selector` option to fix this, or disable sorting by setting `allow_drag_and_drop` and `display_sort_buttons` to `false`: this way the form name will not change.
