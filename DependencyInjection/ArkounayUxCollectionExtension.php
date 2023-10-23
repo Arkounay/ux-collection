@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 class ArkounayUxCollectionExtension extends Extension implements PrependExtensionInterface
 {
 
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
 
@@ -22,7 +22,7 @@ class ArkounayUxCollectionExtension extends Extension implements PrependExtensio
         $container->prependExtensionConfig('twig', ['form_themes' => ['@ArkounayUxCollection/ux_collection_form_theme.html.twig']]);
     }
 
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $container
             ->setDefinition('form.ux-collection', new Definition(UxCollectionType::class))
