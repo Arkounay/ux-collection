@@ -2,7 +2,7 @@
     "name": "@arkounay/ux-collection",
     "description": "Collection for Symfony forms",
     "license": "MIT",
-    "version": "3.3.1",
+    "version": "4.0.0",
     "symfony": {
         "controllers": {
             "collection": {
@@ -24,15 +24,19 @@
                     "@arkounay/ux-collection/src/tabbed-style.css": true
                 }
             }
+        },
+        "importmap": {
+            "sortablejs": "^1.14.0",
+            "@hotwired/stimulus": "^3.0.0"
         }
-    },
-    "scripts": {
-        "build": "babel src -d dist",
-        "lint": "eslint src test"
     },
     "peerDependencies": {
         "sortablejs": "^1.14.0",
         "@hotwired/stimulus": "^3.0.0"
+    },
+    "scripts": {
+        "build": "babel src -d dist",
+        "lint": "eslint src test"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.1",
