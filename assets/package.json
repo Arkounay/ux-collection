@@ -11,8 +11,8 @@
                 "fetch": "eager",
                 "enabled": true,
                 "autoimport": {
-                    "@arkounay/ux-collection/src/style.css": true,
-                    "@arkounay/ux-collection/src/style-when-not-using-bootstrap-5.css": true
+                    "style.css": true,
+                    "style-when-not-using-bootstrap-5.css": true
                 }
             },
             "tabbed_collection": {
@@ -21,7 +21,7 @@
                 "fetch": "eager",
                 "enabled": true,
                 "autoimport": {
-                    "@arkounay/ux-collection/src/tabbed-style.css": true
+                    "tabbed-style.css": true
                 }
             }
         },
