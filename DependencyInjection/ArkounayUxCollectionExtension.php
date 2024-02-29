@@ -16,20 +16,23 @@ class ArkounayUxCollectionExtension extends Extension implements PrependExtensio
     {
         $bundles = $container->getParameter('kernel.bundles');
 
-        if (isset($bundles['TwigBundle'])) {
-            $container->prependExtensionConfig('twig', ['form_themes' => ['@ArkounayUxCollection/ux_collection_form_theme.html.twig']]);
+        if (!isset($bundles['TwigBundle'])) {
+            return;
         }
 
+        $container->prependExtensionConfig('twig', ['form_themes' => ['@ArkounayUxCollection/ux_collection_form_theme.html.twig']]);
 
-        if ($this->isAssetMapperAvailable($container)) {
-            $container->prependExtensionConfig('framework', [
-                'asset_mapper' => [
-                    'paths' => [
-                        __DIR__ . '/../assets/dist' => '@arkounay/ux-collection',
-                    ],
+        if (!$this->isAssetMapperAvailable($container)) {
+            return;
+        }
+
+        $container->prependExtensionConfig('framework', [
+            'asset_mapper' => [
+                'paths' => [
+                    __DIR__ . '/../assets' => '@arkounay/ux-collection',
                 ],
-            ]);
-        }
+            ],
+        ]);
     }
 
     public function load(array $configs, ContainerBuilder $container): void
