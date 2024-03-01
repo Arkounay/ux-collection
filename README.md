@@ -6,10 +6,17 @@ Symfony Collections that works out of the box with Symfony UX
 
 ## Installation
 
+**Before you start, make sure you have [StimulusBundle](https://symfony.com/bundles/StimulusBundle/current/index.html) configured in your app.**
+
+Install the bundle using Composer and Symfony Flex:
+
 ```sh
 composer require arkounay/ux-collection
+```
 
-# Don't forget to install the JavaScript dependencies as well and compile
+If you're using WebpackEncore, install your assets and restart Encore (not needed if you're using AssetMapper):
+
+```sh
 npm install --force
 npm run watch
 
@@ -17,11 +24,6 @@ npm run watch
 yarn install --force
 yarn watch
 ```
-
-or
-
-Also make sure you have at least version 3.0 of [@symfony/stimulus-bridge](https://github.com/symfony/stimulus-bridge)
-in your `package.json` file.
 
 **If you're using bootstrap 5**, you should disable the sandalone CSS import in `assets\controllers.json` :
 ```json
