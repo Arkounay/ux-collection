@@ -2,4 +2,4 @@
 .phpunit.result.cache
 .php_cs.cache
 composer.lock
-Resources/assets/node_modules
+assets/node_modules
