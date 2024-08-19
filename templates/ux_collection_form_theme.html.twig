@@ -9,7 +9,7 @@
             <div class="{{ form.parent.vars.entry_class|default }}">
                 <div class="btn-collection-container d-flex {{ 'ux_tabbed_collection' in form.parent.vars.block_prefixes ? 'btn-tabbed-collection-container' -}}">
                     {% if form.parent.vars.display_sort_buttons|default(false) %}
-                        <button data-action="arkounay--ux-collection--collection#moveUp" data-arkounay--ux-collection--collection-target="up" class="collection-up btn btn-collection">
+                        <button data-action="arkounay--ux-collection--collection#moveUp" data-arkounay--ux-collection--collection-target="up" class="collection-up btn btn-collection" type="button">
                             {% if form.parent.vars.icon_up|default(false) %}
                                 {{ form.parent.vars.icon_up|raw }}
                             {% else %}
@@ -21,7 +21,7 @@
                                 </svg>
                             {% endif %}
                         </button>
-                        <button data-action="arkounay--ux-collection--collection#moveDown" data-arkounay--ux-collection--collection-target="down" class="collection-down btn btn-collection">
+                        <button data-action="arkounay--ux-collection--collection#moveDown" data-arkounay--ux-collection--collection-target="down" class="collection-down btn btn-collection" type="button">
                             {% if form.parent.vars.icon_down|default(false) %}
                                 {{ form.parent.vars.icon_down|raw }}
                             {% else %}
@@ -36,7 +36,7 @@
                     {% endif %}
                     <div class="w-100"></div>
                     {% if form.parent.vars.allow_delete %}
-                        <button data-collection-id="{{ form.parent.vars.id }}" data-arkounay--ux-collection--collection-target="delete" data-action="arkounay--ux-collection--collection#remove" class="collection-remove btn btn-collection btn-collection-remove align-self-end">
+                        <button data-collection-id="{{ form.parent.vars.id }}" data-arkounay--ux-collection--collection-target="delete" data-action="arkounay--ux-collection--collection#remove" class="collection-remove btn btn-collection btn-collection-remove align-self-end" type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                 <line x1="18" y1="6" x2="6" y2="18" />
@@ -51,7 +51,7 @@
                     {{ form_rest(form) }}
                 </div>
                 {% if allow_insert %}
-                    <button class="{{ form.parent.vars.insert_class }}" data-action="arkounay--ux-collection--collection#insert" data-arkounay--ux-collection--collection-target="insert">
+                    <button class="{{ form.parent.vars.insert_class }}" data-action="arkounay--ux-collection--collection#insert" data-arkounay--ux-collection--collection-target="insert" type="button">
                         <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M12 5l0 14"></path>
@@ -102,7 +102,7 @@
 
             {% if allow_add %}
                 <div class="collection-add-wrapper {{ add_wrapper_class }}" data-arkounay--ux-collection--collection-target="addWrapper">
-                    <button class="{{ add_class }}" data-collection-id="{{ id }}" data-arkounay--ux-collection--collection-target="add" data-action="arkounay--ux-collection--collection#add">
+                    <button class="{{ add_class }}" data-collection-id="{{ id }}" data-arkounay--ux-collection--collection-target="add" data-action="arkounay--ux-collection--collection#add" type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                             <line x1="12" y1="5" x2="12" y2="19" />
