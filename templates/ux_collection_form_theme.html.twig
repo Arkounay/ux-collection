@@ -3,7 +3,6 @@
 {% endblock %}
 
 {% block ux_collection_entry_row %}
-    {% apply spaceless %}
         {% set allow_insert = form.parent.vars.allow_add and form.parent.vars.display_insert_button %}
         <div {% if not row_attr.class|default(false) %}class="pt-0 {{ allow_insert ? 'collection-element-with-insert' : 'mb-3' }}"{% endif%} data-arkounay--ux-collection--collection-target="collectionElement" {% for k, v in row_attr|default %}{{ k }}="{{ v }}"{% endfor %}>
             <div class="{{ form.parent.vars.entry_class|default }}">
@@ -62,11 +61,9 @@
                 {% endif %}
             </div>
         </div>
-    {% endapply %}
 {% endblock %}
 
 {% block ux_collection_widget %}
-    {% apply spaceless %}
         {% if prototype is defined %}
             {% set attr = attr|merge({'data-prototype': form_row(prototype)}) %}
             {% set attr = attr|merge({'data-prototype-name': prototype.vars.name}) %}
@@ -113,7 +110,6 @@
                 </div>
             {% endif %}
         </div>
-    {% endapply %}
 {% endblock %}
 
 {% block ux_tabbed_collection_row %}
