@@ -4,7 +4,9 @@ Symfony Collections that works out of the box with Symfony UX
 
 ![demo-gif](https://github.com/arkounay/ux-collection/raw/master/doc/demo.gif)
 
-# Note: Incompatible with [Live Components](https://symfony.com/bundles/ux-live-component/current/index.html) for now - use the provided [LiveCollectionType](https://symfony.com/bundles/ux-live-component/current/index.html#using-livecollectiontype) from LiveComponent instead
+---
+#### Note: Incompatible with [Live Components](https://symfony.com/bundles/ux-live-component/current/index.html) for now - use the provided [LiveCollectionType](https://symfony.com/bundles/ux-live-component/current/index.html#using-livecollectiontype) from LiveComponent instead.
+---
 
 ## Installation
 
